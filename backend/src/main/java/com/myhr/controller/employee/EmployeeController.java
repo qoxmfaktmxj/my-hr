@@ -7,6 +7,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,8 +25,21 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @GetMapping
-    @Operation(summary = "사원 목록 조회", description = "회사의 전체 사원 목록을 조회합니다")
-    public ResponseEntity<List<EmployeeDto>> getEmployees(
+    @Operation(summary = "사원 목록 조회 (페이징)", description = "회사의 사원 목록을 페이징하여 조회합니다")
+    public ResponseEntity<Page<EmployeeDto>> getEmployees(
+            @RequestParam(defaultValue = "BS") String enterCd,
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) String empStatus,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "empYmd"));
+        return ResponseEntity.ok(employeeService.getEmployeesWithPaging(enterCd, keyword, empStatus, pageable));
+    }
+
+    @GetMapping("/all")
+    @Operation(summary = "사원 전체 목록 조회", description = "회사의 전체 사원 목록을 조회합니다 (페이징 없음)")
+    public ResponseEntity<List<EmployeeDto>> getAllEmployees(
             @RequestParam(defaultValue = "BS") String enterCd) {
         return ResponseEntity.ok(employeeService.getEmployees(enterCd));
     }
@@ -33,6 +50,13 @@ public class EmployeeController {
             @RequestParam(defaultValue = "BS") String enterCd,
             @PathVariable String sabun) {
         return ResponseEntity.ok(employeeService.getEmployee(enterCd, sabun));
+    }
+
+    @GetMapping("/count")
+    @Operation(summary = "사원 수 조회", description = "전체 사원 수를 조회합니다")
+    public ResponseEntity<Long> getEmployeeCount(
+            @RequestParam(defaultValue = "BS") String enterCd) {
+        return ResponseEntity.ok(employeeService.getEmployeeCount(enterCd));
     }
 
     @PostMapping

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Table,
   Card,
@@ -10,144 +10,90 @@ import {
   Row,
   Col,
   Select,
+  message,
+  Spin,
 } from 'antd';
 import {
   PlusOutlined,
   SearchOutlined,
   DownloadOutlined,
+  ReloadOutlined,
 } from '@ant-design/icons';
-import type { ColumnsType } from 'antd/es/table';
+import type { ColumnsType, TablePaginationConfig } from 'antd/es/table';
+import { getEmployees } from '../../api/employeeApi';
+import type { Employee } from '../../api/employeeApi';
 
 const { Title } = Typography;
 
-interface Employee {
+interface TableEmployee extends Employee {
   key: string;
-  sabun: string;
-  name: string;
-  department: string;
-  position: string;
-  rank: string;
-  joinDate: string;
-  status: string;
-  phone: string;
-  email: string;
 }
 
-// 임시 데이터
-const mockData: Employee[] = [
-  {
-    key: '1',
-    sabun: 'EMP001',
-    name: '김철수',
-    department: '개발팀',
-    position: '팀장',
-    rank: '과장',
-    joinDate: '2020-03-15',
-    status: '재직',
-    phone: '010-1234-5678',
-    email: 'kim@company.com',
-  },
-  {
-    key: '2',
-    sabun: 'EMP002',
-    name: '이영희',
-    department: '인사팀',
-    position: '담당',
-    rank: '대리',
-    joinDate: '2021-07-01',
-    status: '재직',
-    phone: '010-2345-6789',
-    email: 'lee@company.com',
-  },
-  {
-    key: '3',
-    sabun: 'EMP003',
-    name: '박민수',
-    department: '영업팀',
-    position: '사원',
-    rank: '사원',
-    joinDate: '2023-01-10',
-    status: '재직',
-    phone: '010-3456-7890',
-    email: 'park@company.com',
-  },
-  {
-    key: '4',
-    sabun: 'EMP004',
-    name: '정수진',
-    department: '기획팀',
-    position: '담당',
-    rank: '대리',
-    joinDate: '2019-05-20',
-    status: '휴직',
-    phone: '010-4567-8901',
-    email: 'jung@company.com',
-  },
-  {
-    key: '5',
-    sabun: 'EMP005',
-    name: '최동훈',
-    department: '개발팀',
-    position: '사원',
-    rank: '사원',
-    joinDate: '2024-02-01',
-    status: '재직',
-    phone: '010-5678-9012',
-    email: 'choi@company.com',
-  },
-];
-
-const columns: ColumnsType<Employee> = [
+const columns: ColumnsType<TableEmployee> = [
   {
     title: '사번',
     dataIndex: 'sabun',
     key: 'sabun',
-    width: 100,
-  },
-  {
-    title: '이름',
-    dataIndex: 'name',
-    key: 'name',
-    width: 100,
-  },
-  {
-    title: '부서',
-    dataIndex: 'department',
-    key: 'department',
     width: 120,
   },
   {
-    title: '직책',
-    dataIndex: 'position',
-    key: 'position',
+    title: '이름',
+    dataIndex: 'korNm',
+    key: 'korNm',
     width: 100,
   },
   {
+    title: '영문명',
+    dataIndex: 'engNm',
+    key: 'engNm',
+    width: 120,
+  },
+  {
+    title: '부서',
+    dataIndex: 'deptNm',
+    key: 'deptNm',
+    width: 100,
+    render: (text: string, record: TableEmployee) => text || record.deptCd || '-',
+  },
+  {
     title: '직급',
-    dataIndex: 'rank',
-    key: 'rank',
+    dataIndex: 'rankNm',
+    key: 'rankNm',
     width: 80,
+    render: (text: string, record: TableEmployee) => text || record.rankCd || '-',
   },
   {
     title: '입사일',
-    dataIndex: 'joinDate',
-    key: 'joinDate',
+    dataIndex: 'empYmd',
+    key: 'empYmd',
     width: 120,
   },
   {
     title: '상태',
-    dataIndex: 'status',
-    key: 'status',
+    dataIndex: 'statusCd',
+    key: 'statusCd',
     width: 80,
-    render: (status: string) => {
-      const color = status === '재직' ? 'green' : status === '휴직' ? 'orange' : 'red';
-      return <Tag color={color}>{status}</Tag>;
+    render: (status: string, record: TableEmployee) => {
+      let color = 'default';
+      const text = record.statusNm || status;
+      switch (status) {
+        case '10':
+          color = 'green';
+          break;
+        case '20':
+          color = 'orange';
+          break;
+        case '30':
+          color = 'red';
+          break;
+      }
+      return <Tag color={color}>{text}</Tag>;
     },
   },
   {
     title: '연락처',
-    dataIndex: 'phone',
-    key: 'phone',
+    dataIndex: 'hpNo',
+    key: 'hpNo',
     width: 140,
   },
   {
@@ -160,24 +106,90 @@ const columns: ColumnsType<Employee> = [
     title: '관리',
     key: 'action',
     width: 100,
-    render: (_) => (
+    render: (_, record) => (
       <Space size="small">
-        <Button type="link" size="small">상세</Button>
-        <Button type="link" size="small">수정</Button>
+        <Button type="link" size="small" onClick={() => console.log('상세', record.sabun)}>
+          상세
+        </Button>
+        <Button type="link" size="small" onClick={() => console.log('수정', record.sabun)}>
+          수정
+        </Button>
       </Space>
     ),
   },
 ];
 
 function EmployeeList() {
+  const [data, setData] = useState<TableEmployee[]>([]);
+  const [loading, setLoading] = useState(false);
   const [searchText, setSearchText] = useState('');
-  const [departmentFilter, setDepartmentFilter] = useState<string | undefined>(undefined);
-
-  const filteredData = mockData.filter((item) => {
-    const matchesSearch = item.name.includes(searchText) || item.sabun.includes(searchText);
-    const matchesDepartment = !departmentFilter || item.department === departmentFilter;
-    return matchesSearch && matchesDepartment;
+  const [statusFilter, setStatusFilter] = useState<string | undefined>(undefined);
+  const [pagination, setPagination] = useState<TablePaginationConfig>({
+    current: 1,
+    pageSize: 10,
+    total: 0,
+    showSizeChanger: true,
+    showQuickJumper: true,
+    showTotal: (total) => `총 ${total}명`,
   });
+
+  // 데이터 조회
+  const fetchData = async (page = 1, pageSize = 10, keyword = '', empStatus = '') => {
+    setLoading(true);
+    try {
+      const response = await getEmployees({
+        page: page - 1, // Spring은 0부터 시작
+        size: pageSize,
+        keyword: keyword || undefined,
+        empStatus: empStatus || undefined,
+      });
+
+      const tableData: TableEmployee[] = response.content.map((emp) => ({
+        ...emp,
+        key: emp.sabun,
+      }));
+
+      setData(tableData);
+      setPagination((prev) => ({
+        ...prev,
+        current: page,
+        pageSize: pageSize,
+        total: response.totalElements,
+      }));
+    } catch (error) {
+      console.error('데이터 조회 실패:', error);
+      message.error('사원 목록을 불러오는데 실패했습니다.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 초기 데이터 로드
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  // 테이블 변경 (페이지네이션, 정렬 등)
+  const handleTableChange = (newPagination: TablePaginationConfig) => {
+    fetchData(
+      newPagination.current || 1,
+      newPagination.pageSize || 10,
+      searchText,
+      statusFilter || ''
+    );
+  };
+
+  // 검색
+  const handleSearch = () => {
+    fetchData(1, pagination.pageSize as number, searchText, statusFilter || '');
+  };
+
+  // 새로고침
+  const handleRefresh = () => {
+    setSearchText('');
+    setStatusFilter(undefined);
+    fetchData(1, pagination.pageSize as number);
+  };
 
   return (
     <div>
@@ -187,6 +199,9 @@ function EmployeeList() {
         </Col>
         <Col>
           <Space>
+            <Button icon={<ReloadOutlined />} onClick={handleRefresh}>
+              새로고침
+            </Button>
             <Button icon={<DownloadOutlined />}>엑셀 다운로드</Button>
             <Button type="primary" icon={<PlusOutlined />}>사원등록</Button>
           </Space>
@@ -201,39 +216,41 @@ function EmployeeList() {
               prefix={<SearchOutlined />}
               value={searchText}
               onChange={(e) => setSearchText(e.target.value)}
+              onPressEnter={handleSearch}
               allowClear
             />
           </Col>
           <Col xs={24} sm={12} md={8} lg={6}>
             <Select
-              placeholder="부서 선택"
+              placeholder="재직상태 선택"
               style={{ width: '100%' }}
               allowClear
-              value={departmentFilter}
-              onChange={setDepartmentFilter}
+              value={statusFilter}
+              onChange={setStatusFilter}
               options={[
-                { value: '개발팀', label: '개발팀' },
-                { value: '인사팀', label: '인사팀' },
-                { value: '영업팀', label: '영업팀' },
-                { value: '기획팀', label: '기획팀' },
+                { value: '10', label: '재직' },
+                { value: '20', label: '휴직' },
+                { value: '30', label: '퇴직' },
               ]}
             />
           </Col>
+          <Col>
+            <Button type="primary" icon={<SearchOutlined />} onClick={handleSearch}>
+              검색
+            </Button>
+          </Col>
         </Row>
 
-        <Table
-          columns={columns}
-          dataSource={filteredData}
-          pagination={{
-            total: filteredData.length,
-            pageSize: 10,
-            showSizeChanger: true,
-            showQuickJumper: true,
-            showTotal: (total) => `총 ${total}명`,
-          }}
-          scroll={{ x: 1200 }}
-          size="middle"
-        />
+        <Spin spinning={loading}>
+          <Table
+            columns={columns}
+            dataSource={data}
+            pagination={pagination}
+            onChange={handleTableChange}
+            scroll={{ x: 1300 }}
+            size="middle"
+          />
+        </Spin>
       </Card>
     </div>
   );

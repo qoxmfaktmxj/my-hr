@@ -5,8 +5,11 @@ import com.myhr.domain.employee.EmployeeRepository;
 import com.myhr.dto.employee.EmployeeCreateRequest;
 import com.myhr.dto.employee.EmployeeDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,13 +22,39 @@ public class EmployeeService {
     private final EmployeeRepository employeeRepository;
 
     /**
-     * 사원 목록 조회
+     * 사원 목록 조회 (List)
      */
     public List<EmployeeDto> getEmployees(String enterCd) {
         List<Employee> employees = employeeRepository.findByEnterCd(enterCd);
         return employees.stream()
                 .map(this::toDto)
                 .collect(Collectors.toList());
+    }
+
+    /**
+     * 사원 목록 조회 (페이징)
+     */
+    public Page<EmployeeDto> getEmployeesWithPaging(String enterCd, String keyword, String statusCd, Pageable pageable) {
+        Page<Employee> employeePage;
+
+        boolean hasKeyword = StringUtils.hasText(keyword);
+        boolean hasStatus = StringUtils.hasText(statusCd);
+
+        if (hasKeyword && hasStatus) {
+            // 검색어 + 재직상태
+            employeePage = employeeRepository.findByEnterCdAndKeywordAndStatusCd(enterCd, keyword, statusCd, pageable);
+        } else if (hasKeyword) {
+            // 검색어만
+            employeePage = employeeRepository.findByEnterCdAndKeyword(enterCd, keyword, pageable);
+        } else if (hasStatus) {
+            // 재직상태만
+            employeePage = employeeRepository.findByEnterCdAndStatusCd(enterCd, statusCd, pageable);
+        } else {
+            // 전체 조회
+            employeePage = employeeRepository.findByEnterCd(enterCd, pageable);
+        }
+
+        return employeePage.map(this::toDto);
     }
 
     /**
@@ -88,6 +117,20 @@ public class EmployeeService {
 
         employee.setStatusCd("30");  // 퇴직
         employee.setRetYmd(retYmd);
+    }
+
+    /**
+     * 사원 수 조회
+     */
+    public long getEmployeeCount(String enterCd) {
+        return employeeRepository.countByEnterCd(enterCd);
+    }
+
+    /**
+     * 재직상태별 사원 수 조회
+     */
+    public long getEmployeeCountByStatus(String enterCd, String statusCd) {
+        return employeeRepository.countByEnterCdAndStatusCd(enterCd, statusCd);
     }
 
     /**
