@@ -30,7 +30,6 @@ my-hr/
 ├── backend/           # Spring Boot 백엔드
 ├── database/          # DB 스크립트, 마이그레이션
 └── docs/              # 프로젝트 문서
-    └── db-spec/       # EHR DB 명세 참조
 ```
 
 ## 🚀 시작하기
@@ -57,9 +56,39 @@ cd backend
 - [ ] 복리후생 (경조금, 학자금)
 - [ ] 교육 훈련
 
-## 📚 참고 문서
+## 📚 DB 명세 참조
 
-- [DB 명세서](./docs/db-spec/) - EHR 시스템 DB 구조 참조
+EHR 시스템 DB 명세는 상위 폴더에서 참조합니다.
+
+```
+../                          # 상위 폴더 (EHR_DB명세)
+├── README.md                # DB 전체 현황
+├── Table_summary.md         # 테이블 목록 (1,092개)
+├── Procedure_summary.md     # 프로시저 목록 (371개)
+├── Function_summary.md      # 함수 목록 (525개)
+├── Package_summary.md       # 패키지 목록 (108개)
+├── View_summary.md          # 뷰 목록 (41개)
+├── docs/                    # 프로시저/함수 매뉴얼 (896개)
+└── *_split/                 # 상세 DDL (분리된 파일)
+```
+
+### 도메인별 접두사
+| 접두사 | 도메인 | 설명 |
+|--------|--------|------|
+| `THRM` | 인사관리 | Human Resource Management |
+| `TCPN` | 급여 | Compensation |
+| `TBEN` | 복리후생 | Benefits |
+| `TTIM` | 근태관리 | Time Management |
+| `TORG` | 조직관리 | Organization |
+
+### AI 활용 검색 예시
+```
+"THRM100 테이블 구조 알려줘"
+→ ../Table_summary.md에서 확인 → ../Table_split/ 폴더에서 상세 DDL
+
+"급여계산 프로시저 찾아줘"
+→ ../Procedure_summary.md에서 P_CPN 섹션 확인
+```
 
 ## 📝 License
 
