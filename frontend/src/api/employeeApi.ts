@@ -61,9 +61,10 @@ export const updateEmployee = async (sabun: string, employee: Partial<Employee>)
   return response.data;
 };
 
-// 사원 삭제
-export const deleteEmployee = async (sabun: string): Promise<void> => {
-  await api.delete(`/employees/${sabun}`);
+// 사원 퇴직 처리
+export const deleteEmployee = async (sabun: string, retYmd?: string): Promise<void> => {
+  const today = retYmd || new Date().toISOString().slice(0, 10).replace(/-/g, '');
+  await api.delete(`/employees/${sabun}`, { params: { retYmd: today } });
 };
 
 // 사원 수 조회 (통계용)
