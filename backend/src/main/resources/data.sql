@@ -1,4 +1,28 @@
--- 초기 사원 데이터 (H2 개발용) - 총 100명
+-- ============================================================
+-- 초기 데이터 (H2 개발용) - DataInitializer 대신 data.sql로 통합
+-- ============================================================
+
+-- ============================================================
+-- 1. TORG101 (조직기본관리) - 부서 데이터
+-- ============================================================
+INSERT INTO TORG101 (ENTER_CD, ORG_CD, SDATE, EDATE, ORG_NM, ORG_FULL_NM, ORG_ENG_NM, ORG_TYPE, OBJECT_TYPE, VISUAL_YN, TEL_NO, CHKDATE, CHKID) VALUES
+('BS', 'ORG000', '20200101', '99991231', '대표이사', '대표이사', 'CEO Office', 'T001', 'D', 'Y', '02-1234-5678', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'ORG001', '20200101', '99991231', '경영지원본부', '경영지원본부', 'Management Support Division', 'T002', 'D', 'Y', '02-1234-5600', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'ORG002', '20200101', '99991231', '인사팀', '경영지원본부 > 인사팀', 'HR Team', 'T003', 'T', 'Y', '02-1234-5610', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'ORG003', '20200101', '99991231', '총무팀', '경영지원본부 > 총무팀', 'General Affairs Team', 'T003', 'T', 'Y', '02-1234-5620', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'ORG004', '20200101', '99991231', '재무팀', '경영지원본부 > 재무팀', 'Finance Team', 'T003', 'T', 'Y', '02-1234-5630', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'ORG010', '20200101', '99991231', '기술본부', '기술본부', 'Technology Division', 'T002', 'D', 'Y', '02-1234-5700', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'ORG011', '20200101', '99991231', '개발1팀', '기술본부 > 개발1팀', 'Development Team 1', 'T003', 'T', 'Y', '02-1234-5710', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'ORG012', '20200101', '99991231', '개발2팀', '기술본부 > 개발2팀', 'Development Team 2', 'T003', 'T', 'Y', '02-1234-5720', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'ORG013', '20200101', '99991231', 'QA팀', '기술본부 > QA팀', 'QA Team', 'T003', 'T', 'Y', '02-1234-5730', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'ORG020', '20200101', '99991231', '영업본부', '영업본부', 'Sales Division', 'T002', 'D', 'Y', '02-1234-5800', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'ORG021', '20200101', '99991231', '국내영업팀', '영업본부 > 국내영업팀', 'Domestic Sales Team', 'T003', 'T', 'Y', '02-1234-5810', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'ORG022', '20200101', '99991231', '해외영업팀', '영업본부 > 해외영업팀', 'Overseas Sales Team', 'T003', 'T', 'Y', '02-1234-5820', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'ORG030', '20200101', '99991231', '마케팅본부', '마케팅본부', 'Marketing Division', 'T002', 'D', 'Y', '02-1234-5900', CURRENT_TIMESTAMP(), 'SYSTEM');
+
+-- ============================================================
+-- 2. THRM100 (인사마스타) - 사원 데이터 100명
+-- ============================================================
 INSERT INTO THRM100 (SABUN, ENTER_CD, KOR_NM, ENG_NM, SEX_TYPE, EMP_YMD, EMAIL, HP_NO, STATUS_CD, CHKDATE) VALUES
 ('20240001', 'BS', '김철수', 'Kim Cheolsu', 'M', '20200315', 'kim.cs@company.com', '010-1234-5678', '10', CURRENT_TIMESTAMP()),
 ('20240002', 'BS', '이영희', 'Lee Younghee', 'F', '20210701', 'lee.yh@company.com', '010-2345-6789', '10', CURRENT_TIMESTAMP()),
@@ -100,3 +124,34 @@ INSERT INTO THRM100 (SABUN, ENTER_CD, KOR_NM, ENG_NM, SEX_TYPE, EMP_YMD, EMAIL, 
 ('20240098', 'BS', '이광수', 'Lee Kwangsoo', 'M', '20220405', 'lee.ks@company.com', '010-1010-8080', '10', CURRENT_TIMESTAMP()),
 ('20240099', 'BS', '정려원', 'Jung Ryowon', 'F', '20170715', 'jung.rw@company.com', '010-1010-9090', '10', CURRENT_TIMESTAMP()),
 ('20240100', 'BS', '김래원', 'Kim Raewon', 'M', '20260201', 'kim.rw@company.com', '010-2020-1010', '10', CURRENT_TIMESTAMP());
+
+-- ============================================================
+-- 3. TSYS305 (USER관리) - 로그인 계정 (비밀번호: password123)
+--    BCrypt 해싱값 = $2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy
+-- ============================================================
+-- 주요 테스트 계정 5개
+INSERT INTO TSYS305 (ENTER_CD, SABUN, ID, PASSWORD, ROCKING_YN, LOGIN_FAIL_CNT, PSWD_CHG_YMD, SEARCH_TYPE, EXTRA_YN, MAIN_TYPE, SKIN_TYPE, FONT_TYPE, CHKDATE, CHKID) VALUES
+('BS', '20240001', 'admin',     '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'N', 0, '20250201', 'A', 'N', 'M', 'theme4', 'nanum', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', '20240002', 'younghee',  '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'N', 0, '20250201', 'P', 'N', 'M', 'theme4', 'nanum', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', '20240003', 'minsu',     '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'N', 0, '20250201', 'P', 'N', 'M', 'theme4', 'nanum', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', '20240004', 'sujin',     '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'N', 0, '20250201', 'P', 'N', 'M', 'theme4', 'nanum', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', '20240005', 'donghun',   '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'N', 0, '20250201', 'P', 'N', 'M', 'theme4', 'nanum', CURRENT_TIMESTAMP(), 'SYSTEM');
+
+-- ============================================================
+-- 4. THRM151 (인사이력 - 개인조직사항) - 현재 유효 이력
+-- ============================================================
+-- 대표이사 직할
+INSERT INTO THRM151 (ENTER_CD, SABUN, SDATE, EDATE, ORG_CD, STATUS_CD, STATUS_NM, JIKCHAK_CD, JIKCHAK_NM, JIKWEE_CD, JIKWEE_NM, JIKGUB_CD, JIKGUB_NM, MANAGE_CD, MANAGE_NM, MAIN_DEPT_YN, CHKDATE, CHKID) VALUES
+('BS', '20240001', '20200315', '99991231', 'ORG002', '10', '재직', 'JC001', '팀장',   'JW002', '부장', 'JG002', '부장', 'MG01', '정규직', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM');
+-- 인사팀
+INSERT INTO THRM151 (ENTER_CD, SABUN, SDATE, EDATE, ORG_CD, STATUS_CD, STATUS_NM, JIKCHAK_CD, JIKCHAK_NM, JIKWEE_CD, JIKWEE_NM, JIKGUB_CD, JIKGUB_NM, MANAGE_CD, MANAGE_NM, MAIN_DEPT_YN, CHKDATE, CHKID) VALUES
+('BS', '20240002', '20210701', '99991231', 'ORG002', '10', '재직', NULL,    NULL,     'JW004', '과장', 'JG004', '과장', 'MG01', '정규직', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM');
+-- 개발1팀
+INSERT INTO THRM151 (ENTER_CD, SABUN, SDATE, EDATE, ORG_CD, STATUS_CD, STATUS_NM, JIKCHAK_CD, JIKCHAK_NM, JIKWEE_CD, JIKWEE_NM, JIKGUB_CD, JIKGUB_NM, MANAGE_CD, MANAGE_NM, MAIN_DEPT_YN, CHKDATE, CHKID) VALUES
+('BS', '20240003', '20230110', '99991231', 'ORG011', '10', '재직', NULL,    NULL,     'JW006', '사원', 'JG006', '사원', 'MG01', '정규직', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM');
+-- 총무팀 (휴직)
+INSERT INTO THRM151 (ENTER_CD, SABUN, SDATE, EDATE, ORG_CD, STATUS_CD, STATUS_NM, JIKCHAK_CD, JIKCHAK_NM, JIKWEE_CD, JIKWEE_NM, JIKGUB_CD, JIKGUB_NM, MANAGE_CD, MANAGE_NM, MAIN_DEPT_YN, CHKDATE, CHKID) VALUES
+('BS', '20240004', '20190520', '99991231', 'ORG003', '20', '휴직', NULL,    NULL,     'JW004', '과장', 'JG004', '과장', 'MG01', '정규직', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM');
+-- 개발2팀
+INSERT INTO THRM151 (ENTER_CD, SABUN, SDATE, EDATE, ORG_CD, STATUS_CD, STATUS_NM, JIKCHAK_CD, JIKCHAK_NM, JIKWEE_CD, JIKWEE_NM, JIKGUB_CD, JIKGUB_NM, MANAGE_CD, MANAGE_NM, MAIN_DEPT_YN, CHKDATE, CHKID) VALUES
+('BS', '20240005', '20240201', '99991231', 'ORG012', '10', '재직', NULL,    NULL,     'JW006', '사원', 'JG006', '사원', 'MG01', '정규직', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM');

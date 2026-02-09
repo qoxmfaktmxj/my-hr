@@ -1,5 +1,6 @@
 package com.myhr.controller.employee;
 
+import com.myhr.dto.employee.DashboardStatsDto;
 import com.myhr.dto.employee.EmployeeCreateRequest;
 import com.myhr.dto.employee.EmployeeDto;
 import com.myhr.service.employee.EmployeeService;
@@ -59,6 +60,13 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.getEmployeeCount(enterCd));
     }
 
+    @GetMapping("/stats")
+    @Operation(summary = "대시보드 통계 조회", description = "대시보드용 사원 통계를 조회합니다")
+    public ResponseEntity<DashboardStatsDto> getDashboardStats(
+            @RequestParam(defaultValue = "BS") String enterCd) {
+        return ResponseEntity.ok(employeeService.getDashboardStats(enterCd));
+    }
+
     @PostMapping
     @Operation(summary = "사원 등록", description = "새로운 사원을 등록합니다")
     public ResponseEntity<EmployeeDto> createEmployee(
@@ -75,8 +83,8 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeService.updateEmployee(enterCd, sabun, request));
     }
 
-    @DeleteMapping("/{sabun}")
-    @Operation(summary = "사원 퇴직 처리", description = "사원을 퇴직 처리합니다")
+    @PutMapping("/{sabun}/retire")
+    @Operation(summary = "사원 퇴직 처리", description = "사원의 재직상태를 퇴직으로 변경합니다")
     public ResponseEntity<Void> retireEmployee(
             @RequestParam(defaultValue = "BS") String enterCd,
             @PathVariable String sabun,

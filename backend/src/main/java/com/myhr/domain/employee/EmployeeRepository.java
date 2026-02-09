@@ -69,4 +69,12 @@ public interface EmployeeRepository extends JpaRepository<Employee, String> {
 
     // 재직상태별 사원 수 조회
     long countByEnterCdAndStatusCd(String enterCd, String statusCd);
+
+    // 이번 달 입사자 수 조회
+    @Query("SELECT COUNT(e) FROM Employee e WHERE e.enterCd = :enterCd AND e.empYmd BETWEEN :startDate AND :endDate")
+    long countNewEmployeesThisMonth(
+        @Param("enterCd") String enterCd,
+        @Param("startDate") String startDate,
+        @Param("endDate") String endDate
+    );
 }

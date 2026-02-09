@@ -2,9 +2,12 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
 import koKR from 'antd/locale/ko_KR';
 import MainLayout from './layouts/MainLayout';
+import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import EmployeeList from './pages/employee/EmployeeList';
 import EmployeeDetail from './pages/employee/EmployeeDetail';
+import DepartmentList from './pages/organization/DepartmentList';
+import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
 function App() {
@@ -12,10 +15,22 @@ function App() {
     <ConfigProvider locale={koKR}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<MainLayout />}>
+          {/* 로그인 페이지 (인증 불필요) */}
+          <Route path="/login" element={<Login />} />
+
+          {/* 인증 필요한 페이지들 */}
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <MainLayout />
+              </ProtectedRoute>
+            }
+          >
             <Route index element={<Dashboard />} />
             <Route path="employee" element={<EmployeeList />} />
             <Route path="employee/:sabun" element={<EmployeeDetail />} />
+            <Route path="organization/department" element={<DepartmentList />} />
           </Route>
         </Routes>
       </BrowserRouter>

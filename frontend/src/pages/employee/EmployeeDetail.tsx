@@ -19,7 +19,7 @@ import {
   StopOutlined,
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
-import { useEmployeeDetail, useUpdateEmployee, useDeleteEmployee } from '../../hooks/useEmployee';
+import { useEmployeeDetail, useUpdateEmployee, useRetireEmployee } from '../../hooks/useEmployee';
 import EmployeeFormModal from './EmployeeFormModal';
 import type { Employee } from '../../api/employeeApi';
 
@@ -49,7 +49,7 @@ function EmployeeDetail() {
 
   const { data: employee, isLoading } = useEmployeeDetail(sabun || '');
   const updateMutation = useUpdateEmployee();
-  const deleteMutation = useDeleteEmployee();
+  const retireMutation = useRetireEmployee();
 
   const handleUpdate = (values: Partial<Employee>) => {
     if (!sabun) return;
@@ -61,7 +61,7 @@ function EmployeeDetail() {
 
   const handleRetire = () => {
     if (!sabun) return;
-    deleteMutation.mutate(
+    retireMutation.mutate(
       { sabun, retYmd: retireDate?.format('YYYYMMDD') },
       {
         onSuccess: () => {
@@ -162,7 +162,7 @@ function EmployeeDetail() {
         okText="퇴직 처리"
         okButtonProps={{ danger: true }}
         cancelText="취소"
-        confirmLoading={deleteMutation.isPending}
+        confirmLoading={retireMutation.isPending}
       >
         <p>
           <strong>{employee.korNm}</strong> ({employee.sabun}) 사원을 퇴직 처리하시겠습니까?

@@ -2,8 +2,10 @@ package com.myhr.service.employee;
 
 import com.myhr.domain.employee.Employee;
 import com.myhr.domain.employee.EmployeeRepository;
+import com.myhr.dto.employee.DashboardStatsDto;
 import com.myhr.dto.employee.EmployeeCreateRequest;
 import com.myhr.dto.employee.EmployeeDto;
+import com.myhr.repository.OrganizationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +24,7 @@ import java.util.stream.Collectors;
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
+    private final OrganizationRepository organizationRepository;
 
     /**
      * 사원 목록 조회 (List)
@@ -131,6 +136,35 @@ public class EmployeeService {
      */
     public long getEmployeeCountByStatus(String enterCd, String statusCd) {
         return employeeRepository.countByEnterCdAndStatusCd(enterCd, statusCd);
+    }
+
+    /**
+     * 대시보드 통계 조회
+     */
+    public DashboardStatsDto getDashboardStats(String enterCd) {
+        long total = employeeRepository.countByEnterCd(enterCd);
+        long active = employeeRepository.countByEnterCdAndStatusCd(enterCd, "10");
+        long leave = employeeRepository.countByEnterCdAndStatusCd(enterCd, "20");
+        long retired = employeeRepository.countByEnterCdAndStatusCd(enterCd, "30");
+
+        // 이번 달 입사자 수
+        LocalDate now = LocalDate.now();
+        String monthStart = now.withDayOfMonth(1).format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        String monthEnd = now.withDayOfMonth(now.lengthOfMonth()).format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        long newThisMonth = employeeRepository.countNewEmployeesThisMonth(enterCd, monthStart, monthEnd);
+
+        // 활성 부서 수
+        String today = now.format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        long departments = organizationRepository.findActiveOrganizations(enterCd, today).size();
+
+        return DashboardStatsDto.builder()
+                .totalEmployees(total)
+                .activeEmployees(active)
+                .leaveEmployees(leave)
+                .retiredEmployees(retired)
+                .newThisMonth(newThisMonth)
+                .departments(departments)
+                .build();
     }
 
     /**

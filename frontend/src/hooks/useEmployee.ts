@@ -5,7 +5,7 @@ import {
   getEmployee,
   createEmployee,
   updateEmployee,
-  deleteEmployee,
+  retireEmployee,
 } from '../api/employeeApi';
 import type { Employee, EmployeeSearchParams } from '../api/employeeApi';
 
@@ -66,11 +66,11 @@ export function useUpdateEmployee() {
 }
 
 /** 사원 퇴직 처리 */
-export function useDeleteEmployee() {
+export function useRetireEmployee() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ sabun, retYmd }: { sabun: string; retYmd?: string }) =>
-      deleteEmployee(sabun, retYmd),
+      retireEmployee(sabun, retYmd),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: EMPLOYEE_KEYS.all });
       message.success('퇴직 처리가 완료되었습니다.');

@@ -25,7 +25,7 @@ import {
 import type { ColumnsType, TablePaginationConfig } from 'antd/es/table';
 import dayjs from 'dayjs';
 import type { Employee } from '../../api/employeeApi';
-import { useEmployeeList, useCreateEmployee, useUpdateEmployee, useDeleteEmployee } from '../../hooks/useEmployee';
+import { useEmployeeList, useCreateEmployee, useUpdateEmployee, useRetireEmployee } from '../../hooks/useEmployee';
 import EmployeeFormModal from './EmployeeFormModal';
 
 const { Title } = Typography;
@@ -63,7 +63,7 @@ function EmployeeList() {
 
   const createMutation = useCreateEmployee();
   const updateMutation = useUpdateEmployee();
-  const deleteMutation = useDeleteEmployee();
+  const retireMutation = useRetireEmployee();
 
   // 테이블 데이터
   const tableData: TableEmployee[] = (data?.content || []).map((emp) => ({
@@ -189,7 +189,7 @@ function EmployeeList() {
   // 퇴직 처리
   const handleRetire = () => {
     if (!retireTarget) return;
-    deleteMutation.mutate(
+    retireMutation.mutate(
       { sabun: retireTarget.sabun, retYmd: retireDate?.format('YYYYMMDD') },
       { onSuccess: () => { setRetireOpen(false); setRetireTarget(null); } },
     );
@@ -290,7 +290,7 @@ function EmployeeList() {
         okText="퇴직 처리"
         okButtonProps={{ danger: true }}
         cancelText="취소"
-        confirmLoading={deleteMutation.isPending}
+        confirmLoading={retireMutation.isPending}
       >
         {retireTarget && (
           <>

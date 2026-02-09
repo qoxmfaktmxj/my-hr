@@ -62,13 +62,28 @@ export const updateEmployee = async (sabun: string, employee: Partial<Employee>)
 };
 
 // 사원 퇴직 처리
-export const deleteEmployee = async (sabun: string, retYmd?: string): Promise<void> => {
+export const retireEmployee = async (sabun: string, retYmd?: string): Promise<void> => {
   const today = retYmd || new Date().toISOString().slice(0, 10).replace(/-/g, '');
-  await api.delete(`/employees/${sabun}`, { params: { retYmd: today } });
+  await api.put(`/employees/${sabun}/retire`, null, { params: { retYmd: today } });
 };
 
 // 사원 수 조회 (통계용)
 export const getEmployeeCount = async (): Promise<number> => {
   const response = await api.get('/employees/count');
+  return response.data;
+};
+
+// 대시보드 통계 조회
+export interface DashboardStats {
+  totalEmployees: number;
+  activeEmployees: number;
+  leaveEmployees: number;
+  retiredEmployees: number;
+  newThisMonth: number;
+  departments: number;
+}
+
+export const getDashboardStats = async (): Promise<DashboardStats> => {
+  const response = await api.get<DashboardStats>('/employees/stats');
   return response.data;
 };

@@ -7,6 +7,8 @@ import {
   Avatar,
   Dropdown,
   Space,
+  Typography,
+  Tag,
 } from 'antd';
 import {
   DashboardOutlined,
@@ -18,10 +20,15 @@ import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
   BellOutlined,
+  LogoutOutlined,
+  IdcardOutlined,
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
+import { useAuthStore } from '../stores/useAuthStore';
+import { logout as logoutApi } from '../api/authApi';
 
 const { Header, Sider, Content } = Layout;
+const { Text } = Typography;
 
 const menuItems: MenuProps['items'] = [
   {
@@ -72,15 +79,11 @@ const menuItems: MenuProps['items'] = [
   },
 ];
 
-const userMenuItems: MenuProps['items'] = [
-  { key: 'profile', label: '내 정보' },
-  { key: 'logout', label: '로그아웃' },
-];
-
 function MainLayout() {
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { user, clearAuth } = useAuthStore();
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -88,6 +91,50 @@ function MainLayout() {
   const handleMenuClick: MenuProps['onClick'] = (e) => {
     navigate(e.key);
   };
+
+  // 로그아웃 처리
+  const handleLogout = async () => {
+    try {
+      await logoutApi();
+    } catch {
+      // 에러가 나도 로그아웃 처리
+    } finally {
+      clearAuth();
+      navigate('/login', { replace: true });
+    }
+  };
+
+  // 사용자 드롭다운 메뉴
+  const userMenuItems: MenuProps['items'] = [
+    {
+      key: 'userInfo',
+      label: (
+        <div style={{ padding: '4px 0' }}>
+          <div><Text strong>{user?.name || '-'}</Text></div>
+          <div><Text type="secondary" style={{ fontSize: 12 }}>{user?.sabun || '-'}</Text></div>
+          <div>
+            <Tag color="blue" style={{ fontSize: 11, marginTop: 4 }}>
+              {user?.jikweeNm || '-'} / {user?.jikgubNm || '-'}
+            </Tag>
+          </div>
+        </div>
+      ),
+      disabled: true,
+    },
+    { type: 'divider' },
+    {
+      key: 'profile',
+      icon: <IdcardOutlined />,
+      label: '내 정보',
+    },
+    {
+      key: 'logout',
+      icon: <LogoutOutlined />,
+      label: '로그아웃',
+      danger: true,
+      onClick: handleLogout,
+    },
+  ];
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -143,10 +190,10 @@ function MainLayout() {
           </div>
           <Space size={24}>
             <BellOutlined style={{ fontSize: 18, cursor: 'pointer' }} />
-            <Dropdown menu={{ items: userMenuItems }} placement="bottomRight">
+            <Dropdown menu={{ items: userMenuItems }} placement="bottomRight" trigger={['click']}>
               <Space style={{ cursor: 'pointer' }}>
-                <Avatar icon={<UserOutlined />} />
-                <span>관리자</span>
+                <Avatar icon={<UserOutlined />} style={{ backgroundColor: '#1890ff' }} />
+                <span>{user?.name || '사용자'}</span>
               </Space>
             </Dropdown>
           </Space>

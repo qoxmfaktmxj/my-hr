@@ -5,18 +5,13 @@ import {
   TeamOutlined,
   RiseOutlined,
   ClockCircleOutlined,
+  PauseCircleOutlined,
+  StopOutlined,
 } from '@ant-design/icons';
-import { getEmployees } from '../api/employeeApi';
-import type { Employee } from '../api/employeeApi';
+import { getEmployees, getDashboardStats } from '../api/employeeApi';
+import type { Employee, DashboardStats } from '../api/employeeApi';
 
 const { Title } = Typography;
-
-interface DashboardStats {
-  totalEmployees: number;
-  activeEmployees: number;
-  newThisMonth: number;
-  departments: number;
-}
 
 interface TableEmployee extends Employee {
   key: string;
@@ -55,6 +50,8 @@ function Dashboard() {
   const [stats, setStats] = useState<DashboardStats>({
     totalEmployees: 0,
     activeEmployees: 0,
+    leaveEmployees: 0,
+    retiredEmployees: 0,
     newThisMonth: 0,
     departments: 0,
   });
@@ -64,33 +61,19 @@ function Dashboard() {
     const fetchDashboardData = async () => {
       setLoading(true);
       try {
-        // 최근 사원 목록 조회 (최대 5명)
-        const response = await getEmployees({ page: 0, size: 5 });
+        // 통계 API와 최근 사원 목록을 병렬 호출
+        const [statsData, employeeData] = await Promise.all([
+          getDashboardStats(),
+          getEmployees({ page: 0, size: 5 }),
+        ]);
 
-        const tableData: TableEmployee[] = response.content.map((emp) => ({
+        setStats(statsData);
+
+        const tableData: TableEmployee[] = employeeData.content.map((emp) => ({
           ...emp,
           key: emp.sabun,
         }));
-
         setRecentEmployees(tableData);
-
-        // 통계 데이터 설정
-        // 실제 운영에서는 별도 통계 API를 만들어야 함
-        const activeCount = response.content.filter(emp => emp.statusCd === '10').length;
-
-        setStats({
-          totalEmployees: response.totalElements,
-          activeEmployees: activeCount,
-          newThisMonth: response.content.filter(emp => {
-            if (!emp.empYmd) return false;
-            // empYmd 형식: "20240201" (YYYYMMDD)
-            const year = parseInt(emp.empYmd.substring(0, 4));
-            const month = parseInt(emp.empYmd.substring(4, 6)) - 1; // 0-based
-            const now = new Date();
-            return month === now.getMonth() && year === now.getFullYear();
-          }).length,
-          departments: [...new Set(response.content.map(emp => emp.deptCd).filter(Boolean))].length,
-        });
       } catch (error) {
         console.error('대시보드 데이터 조회 실패:', error);
         message.error('대시보드 데이터를 불러오는데 실패했습니다.');
@@ -108,7 +91,7 @@ function Dashboard() {
         <Title level={4}>대시보드</Title>
 
         <Row gutter={[16, 16]} style={{ marginTop: 24 }}>
-          <Col xs={24} sm={12} lg={6}>
+          <Col xs={24} sm={12} lg={4}>
             <Card>
               <Statistic
                 title="전체 사원"
@@ -118,7 +101,7 @@ function Dashboard() {
               />
             </Card>
           </Col>
-          <Col xs={24} sm={12} lg={6}>
+          <Col xs={24} sm={12} lg={4}>
             <Card>
               <Statistic
                 title="재직 중"
@@ -128,7 +111,27 @@ function Dashboard() {
               />
             </Card>
           </Col>
-          <Col xs={24} sm={12} lg={6}>
+          <Col xs={24} sm={12} lg={4}>
+            <Card>
+              <Statistic
+                title="휴직 중"
+                value={stats.leaveEmployees}
+                prefix={<PauseCircleOutlined />}
+                valueStyle={{ color: '#faad14' }}
+              />
+            </Card>
+          </Col>
+          <Col xs={24} sm={12} lg={4}>
+            <Card>
+              <Statistic
+                title="퇴직"
+                value={stats.retiredEmployees}
+                prefix={<StopOutlined />}
+                valueStyle={{ color: '#ff4d4f' }}
+              />
+            </Card>
+          </Col>
+          <Col xs={24} sm={12} lg={4}>
             <Card>
               <Statistic
                 title="이번 달 입사"
@@ -138,7 +141,7 @@ function Dashboard() {
               />
             </Card>
           </Col>
-          <Col xs={24} sm={12} lg={6}>
+          <Col xs={24} sm={12} lg={4}>
             <Card>
               <Statistic
                 title="부서 수"
