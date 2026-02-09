@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Card, Tabs, Button, Space, Typography, Row, Col, Spin, Select, Input } from 'antd';
+import { Card, Tabs, Button, Space, Typography, Row, Col, Select, Input } from 'antd';
 import { ArrowLeftOutlined, SearchOutlined } from '@ant-design/icons';
 import { useEmployeeList } from '../../hooks/useEmployee';
 import FamilyTab from './tabs/FamilyTab';
@@ -74,12 +74,11 @@ function PersonnelInfo() {
 
       {sabun ? (
         <Card>
-          <Tabs items={tabItems} />
+          <Tabs items={tabItems} destroyInactiveTabPane />
         </Card>
       ) : (
         <Card>
           <div style={{ textAlign: 'center', padding: 60 }}>
-            <Spin size="large" />
             <p style={{ marginTop: 16, color: '#999' }}>사원을 선택해주세요</p>
           </div>
         </Card>

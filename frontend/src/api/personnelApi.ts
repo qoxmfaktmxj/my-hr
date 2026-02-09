@@ -119,8 +119,11 @@ export const deleteEducation = async (sabun: string, seq: number, enterCd = 'BS'
   (await api.delete(`/personnel/${sabun}/education/${seq}`, { params: { enterCd } })).data;
 
 // 병역
-export const getMilitary = async (sabun: string, enterCd = 'BS') =>
-  (await api.get<Military>(`/personnel/${sabun}/military`, { params: { enterCd } })).data;
+export const getMilitary = async (sabun: string, enterCd = 'BS'): Promise<Military | null> => {
+  const res = await api.get(`/personnel/${sabun}/military`, { params: { enterCd } });
+  if (res.status === 204 || !res.data) return null;
+  return res.data;
+};
 export const saveMilitary = async (sabun: string, data: Partial<Military>) =>
   (await api.post<Military>(`/personnel/${sabun}/military`, data)).data;
 

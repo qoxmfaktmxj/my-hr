@@ -86,7 +86,11 @@ public class PersonnelController {
     public ResponseEntity<Military> getMilitary(
             @RequestParam(defaultValue = "BS") String enterCd,
             @PathVariable String sabun) {
-        return ResponseEntity.ok(personnelService.getMilitary(enterCd, sabun));
+        Military military = personnelService.getMilitary(enterCd, sabun);
+        if (military == null) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(military);
     }
 
     @PostMapping("/{sabun}/military")
