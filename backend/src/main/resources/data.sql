@@ -155,3 +155,58 @@ INSERT INTO THRM151 (ENTER_CD, SABUN, SDATE, EDATE, ORG_CD, STATUS_CD, STATUS_NM
 -- 개발2팀
 INSERT INTO THRM151 (ENTER_CD, SABUN, SDATE, EDATE, ORG_CD, STATUS_CD, STATUS_NM, JIKCHAK_CD, JIKCHAK_NM, JIKWEE_CD, JIKWEE_NM, JIKGUB_CD, JIKGUB_NM, MANAGE_CD, MANAGE_NM, MAIN_DEPT_YN, CHKDATE, CHKID) VALUES
 ('BS', '20240005', '20240201', '99991231', 'ORG012', '10', '재직', NULL,    NULL,     'JW006', '사원', 'JG006', '사원', 'MG01', '정규직', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM');
+
+-- ============================================================
+-- 5. THRM111 (가족사항)
+-- ============================================================
+INSERT INTO THRM111 (ENTER_CD, SABUN, FAM_NM, FAM_CD, SDATE, FAM_YMD, SEX_TYPE, TEL_NO, FAM_YN, NOTE, CHKDATE, CHKID) VALUES
+('BS', '20240001', '김순자', '01', '20200315', '19551020', 'F', '010-1111-0001', 'Y', '어머니', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', '20240001', '김민지', '03', '20200315', '20100305', 'F', '010-1111-0002', 'Y', '딸', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', '20240002', '이정호', '02', '20210701', '19600815', 'M', '010-2222-0001', 'N', '아버지', CURRENT_TIMESTAMP(), 'SYSTEM');
+
+-- ============================================================
+-- 6. THRM113 (자격사항)
+-- ============================================================
+INSERT INTO THRM113 (ENTER_CD, SABUN, SEQ, LICENSE_NM, LICENSE_GRADE, LICENSE_NO, LIC_S_YMD, OFFICE_CD, LICENSE_BIGO, CHKDATE, CHKID) VALUES
+('BS', '20240001', 1, '정보처리기사', '기사', '2018-001234', '20180615', '한국산업인력공단', '', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', '20240001', 2, 'SQLD', '전문가', 'SQL-2020-5678', '20200320', '한국데이터산업진흥원', '', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', '20240003', 1, 'AWS Solutions Architect', 'Associate', 'AWS-2023-1234', '20230801', 'Amazon', '', CURRENT_TIMESTAMP(), 'SYSTEM');
+
+-- ============================================================
+-- 7. THRM115 (학력사항)
+-- ============================================================
+INSERT INTO THRM115 (ENTER_CD, SABUN, SEQ, ACA_SCH_NM, ACAMAJ_NM, ACA_S_YM, ACA_E_YM, ACA_YN, ACA_TYPE, NOTE, CHKDATE, CHKID) VALUES
+('BS', '20240001', 1, '서울대학교', '컴퓨터공학', '20100301', '20140228', '10', 'Y', '학사', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', '20240001', 2, '서울중학교', '', '20040301', '20070228', '10', 'N', '', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', '20240002', 1, '연세대학교', '경영학', '20120301', '20160228', '10', 'Y', '학사', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', '20240003', 1, '한양대학교', '소프트웨어학', '20180301', '20220228', '10', 'Y', '학사', CURRENT_TIMESTAMP(), 'SYSTEM');
+
+-- ============================================================
+-- 8. THRM121 (병역사항)
+-- ============================================================
+INSERT INTO THRM121 (ENTER_CD, SABUN, TRANSFER_CD, ARMY_CD, ARMY_GRADE_CD, ARMY_NO, ARMY_S_YMD, ARMY_E_YMD, ARMY_UNIT_NM, DISCHARGE_CD, ARMY_MEMO, CHKDATE, CHKID) VALUES
+('BS', '20240001', '01', '01', '05', '12-71234567', '20140701', '20160401', '육군 제1사단', '01', '만기전역', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', '20240003', '01', '02', '06', '23-71234568', '20220301', '20231201', '해군 작전사령부', '01', '만기전역', CURRENT_TIMESTAMP(), 'SYSTEM');
+
+-- ============================================================
+-- 9. THRM124 (연락처)
+-- ============================================================
+INSERT INTO THRM124 (ENTER_CD, SABUN, CONT_TYPE, CONT_ADDRESS, CHKDATE, CHKID) VALUES
+('BS', '20240001', '01', '010-1234-5678', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', '20240001', '02', '02-1234-5678', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', '20240001', '03', 'kim.cs@personal.com', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', '20240002', '01', '010-2345-6789', CURRENT_TIMESTAMP(), 'SYSTEM');
+
+-- ============================================================
+-- 10. THRM128 (포상관리)
+-- ============================================================
+INSERT INTO THRM128 (ENTER_CD, SABUN, SEQ, PRIZE_YMD, PRIZE_CD, PRIZE_OFFICE_NM, MEMO2, NOTE, CHKDATE, CHKID) VALUES
+('BS', '20240001', 1, '20220115', '01', '대표이사', '연간 우수사원 선정', '상금 200만원', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', '20240001', 2, '20230720', '02', '기술본부장', '프로젝트 우수 기여', '', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', '20240003', 1, '20240101', '01', '개발본부장', '신규 서비스 런칭 기여', '상금 100만원', CURRENT_TIMESTAMP(), 'SYSTEM');
+
+-- ============================================================
+-- 11. THRM129 (징계관리)
+-- ============================================================
+INSERT INTO THRM129 (ENTER_CD, SABUN, SEQ, PUNISH_YMD, PUNISH_CD, PUNISH_GB, SDATE, EDATE, PUNISH_MEMO, NOTE, CHKDATE, CHKID) VALUES
+('BS', '20240005', 1, '20240815', '01', '01', '20240815', '20240915', '지각 3회 누적', '경고', CURRENT_TIMESTAMP(), 'SYSTEM');

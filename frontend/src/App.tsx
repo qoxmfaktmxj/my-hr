@@ -6,6 +6,8 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import EmployeeList from './pages/employee/EmployeeList';
 import EmployeeDetail from './pages/employee/EmployeeDetail';
+import EmployeeRegister from './pages/employee/EmployeeRegister';
+import PersonnelInfo from './pages/personnel/PersonnelInfo';
 import DepartmentList from './pages/organization/DepartmentList';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
@@ -29,7 +31,10 @@ function App() {
           >
             <Route index element={<Dashboard />} />
             <Route path="employee" element={<EmployeeList />} />
+            <Route path="employee/register" element={<EmployeeRegister />} />
             <Route path="employee/:sabun" element={<EmployeeDetail />} />
+            <Route path="personnel" element={<PersonnelInfo />} />
+            <Route path="personnel/:sabun" element={<PersonnelInfo />} />
             <Route path="organization/department" element={<DepartmentList />} />
           </Route>
         </Routes>

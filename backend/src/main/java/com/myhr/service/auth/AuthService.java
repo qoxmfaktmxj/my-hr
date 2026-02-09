@@ -10,7 +10,6 @@ import com.myhr.dto.auth.*;
 import com.myhr.repository.OrganizationRepository;
 import com.myhr.repository.PersonalHistoryRepository;
 import com.myhr.repository.UserAccountRepository;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -146,12 +145,9 @@ public class AuthService {
      * 로그아웃 처리 (Refresh Token Cookie 삭제)
      */
     public void logout(HttpServletResponse response) {
-        Cookie cookie = new Cookie("refreshToken", null);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(false);  // 운영: true (HTTPS)
-        cookie.setPath("/");
-        cookie.setMaxAge(0);  // 즉시 만료
-        response.addCookie(cookie);
+        // Set-Cookie 헤더로 직접 삭제 (setRefreshTokenCookie와 동일 방식)
+        response.addHeader("Set-Cookie",
+                "refreshToken=; Path=/; Max-Age=0; HttpOnly; SameSite=Lax");
 
         log.info("로그아웃 처리 완료");
     }
@@ -246,15 +242,8 @@ public class AuthService {
      * Refresh Token을 HttpOnly Cookie로 설정
      */
     private void setRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
-        Cookie cookie = new Cookie("refreshToken", refreshToken);
-        cookie.setHttpOnly(true);     // JavaScript에서 접근 불가 (XSS 방어)
-        cookie.setSecure(false);      // 개발: false, 운영: true (HTTPS만 전송)
-        cookie.setPath("/");          // 모든 경로에서 전송
-        cookie.setMaxAge((int) (jwtTokenProvider.getRefreshTokenExpiration() / 1000));  // 7일
-        // SameSite=Lax는 Cookie 속성으로 직접 설정 (Servlet API에서 미지원)
-        response.addCookie(cookie);
-
-        // SameSite 속성 추가 (Header로 직접 설정)
+        // SameSite 속성을 포함하려면 Set-Cookie 헤더를 직접 설정해야 함
+        // (Servlet Cookie API는 SameSite 미지원)
         String cookieHeader = String.format(
                 "refreshToken=%s; Path=/; Max-Age=%d; HttpOnly; SameSite=Lax",
                 refreshToken,

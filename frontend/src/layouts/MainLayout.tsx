@@ -43,6 +43,7 @@ const menuItems: MenuProps['items'] = [
     children: [
       { key: '/employee', label: '사원목록' },
       { key: '/employee/register', label: '사원등록' },
+      { key: '/personnel', label: '인사기본' },
     ],
   },
   {

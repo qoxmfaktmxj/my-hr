@@ -71,6 +71,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getRequestURI();
+        // /api/auth/me는 인증이 필요하므로 필터를 적용해야 함
+        if (path.equals("/api/auth/me")) {
+            return false;
+        }
         return path.startsWith("/api/auth/")
                 || path.startsWith("/h2-console")
                 || path.startsWith("/api-docs")
