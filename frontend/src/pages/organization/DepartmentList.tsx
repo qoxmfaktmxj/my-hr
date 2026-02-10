@@ -30,6 +30,7 @@ import {
   useUpdateOrganization,
   useDeactivateOrganization,
 } from '../../hooks/useOrganization';
+import { useCodeMap } from '../../hooks/useCommonCode';
 
 const { Title } = Typography;
 
@@ -38,6 +39,8 @@ interface TableOrganization extends Organization {
 }
 
 function DepartmentList() {
+  const { getCodeName, getCodeOptions, getCodeColor } = useCodeMap();
+
   // 검색 상태
   const [searchText, setSearchText] = useState('');
   const [appliedSearch, setAppliedSearch] = useState('');
@@ -77,13 +80,8 @@ function DepartmentList() {
       key: 'orgTypeNm',
       width: 100,
       render: (text: string, record) => {
-        let color = 'default';
-        switch (record.orgType) {
-          case 'T001': color = 'red'; break;
-          case 'T002': color = 'blue'; break;
-          case 'T003': color = 'green'; break;
-        }
-        return <Tag color={color}>{text || record.orgType || '-'}</Tag>;
+        const color = getCodeColor('ORG_TYPE', record.orgType) || 'default';
+        return <Tag color={color}>{text || getCodeName('ORG_TYPE', record.orgType) || '-'}</Tag>;
       },
     },
     { title: '전화번호', dataIndex: 'telNo', key: 'telNo', width: 140 },
@@ -308,12 +306,7 @@ function DepartmentList() {
             </Col>
             <Col span={12}>
               <Form.Item name="orgType" label="조직유형">
-                <Select placeholder="조직유형 선택">
-                  <Select.Option value="T001">대표이사</Select.Option>
-                  <Select.Option value="T002">본부</Select.Option>
-                  <Select.Option value="T003">팀</Select.Option>
-                  <Select.Option value="T004">파트</Select.Option>
-                </Select>
+                <Select placeholder="조직유형 선택" options={getCodeOptions('ORG_TYPE')} />
               </Form.Item>
             </Col>
           </Row>

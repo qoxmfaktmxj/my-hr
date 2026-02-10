@@ -2,21 +2,13 @@ import { useEffect } from 'react';
 import { Form, Input, Select, Button, Spin, Row, Col } from 'antd';
 import { SaveOutlined } from '@ant-design/icons';
 import { useMilitary, useSaveMilitary } from '../../../hooks/usePersonnel';
-
-const TRANSFER_OPTIONS = [
-  { value: '01', label: '필' }, { value: '02', label: '미필' },
-  { value: '03', label: '면제' }, { value: '04', label: '해당없음' },
-];
-
-const ARMY_OPTIONS = [
-  { value: '01', label: '육군' }, { value: '02', label: '해군' },
-  { value: '03', label: '공군' }, { value: '04', label: '해병대' },
-];
+import { useCodeMap } from '../../../hooks/useCommonCode';
 
 export default function MilitaryTab({ sabun }: { sabun: string }) {
   const { data, isLoading } = useMilitary(sabun);
   const saveMutation = useSaveMilitary(sabun);
   const [form] = Form.useForm();
+  const { getCodeOptions } = useCodeMap();
 
   useEffect(() => {
     if (data) form.setFieldsValue(data);
@@ -38,10 +30,10 @@ export default function MilitaryTab({ sabun }: { sabun: string }) {
       <Form form={form} layout="vertical">
         <Row gutter={16}>
           <Col span={8}>
-            <Form.Item name="transferCd" label="병역구분"><Select options={TRANSFER_OPTIONS} placeholder="선택" /></Form.Item>
+            <Form.Item name="transferCd" label="병역구분"><Select options={getCodeOptions('ARMY_TRANSFER')} placeholder="선택" /></Form.Item>
           </Col>
           <Col span={8}>
-            <Form.Item name="armyCd" label="군별"><Select options={ARMY_OPTIONS} placeholder="선택" /></Form.Item>
+            <Form.Item name="armyCd" label="군별"><Select options={getCodeOptions('ARMY_CD')} placeholder="선택" /></Form.Item>
           </Col>
           <Col span={8}>
             <Form.Item name="armyGradeCd" label="계급"><Input placeholder="병장, 상병 등" /></Form.Item>

@@ -2,16 +2,13 @@ import { useState } from 'react';
 import { Table, Button, Modal, Form, Input, Select, Popconfirm } from 'antd';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useEducations, useSaveEducation, useDeleteEducation } from '../../../hooks/usePersonnel';
-
-const GRAD_OPTIONS = [
-  { value: '10', label: '졸업' }, { value: '20', label: '재학' },
-  { value: '30', label: '중퇴' }, { value: '40', label: '수료' },
-];
+import { useCodeMap } from '../../../hooks/useCommonCode';
 
 export default function EducationTab({ sabun }: { sabun: string }) {
   const { data = [], isLoading } = useEducations(sabun);
   const saveMutation = useSaveEducation(sabun);
   const deleteMutation = useDeleteEducation(sabun);
+  const { getCodeName, getCodeOptions } = useCodeMap();
   const [open, setOpen] = useState(false);
   const [form] = Form.useForm();
 
@@ -27,7 +24,7 @@ export default function EducationTab({ sabun }: { sabun: string }) {
     { title: '전공', dataIndex: 'acamajNm', width: 140 },
     { title: '입학일', dataIndex: 'acaSYm', width: 100 },
     { title: '졸업일', dataIndex: 'acaEYm', width: 100 },
-    { title: '졸업구분', dataIndex: 'acaYn', width: 80, render: (v: string) => GRAD_OPTIONS.find(o => o.value === v)?.label || v },
+    { title: '졸업구분', dataIndex: 'acaYn', width: 80, render: (v: string) => getCodeName('EDU_STATUS', v) || v },
     { title: '최종학력', dataIndex: 'acaType', width: 80, render: (v: string) => v === 'Y' ? '예' : '아니오' },
     { title: '비고', dataIndex: 'note' },
     {
@@ -52,7 +49,7 @@ export default function EducationTab({ sabun }: { sabun: string }) {
           <Form.Item name="acamajNm" label="전공"><Input /></Form.Item>
           <Form.Item name="acaSYm" label="입학일"><Input placeholder="20180301" /></Form.Item>
           <Form.Item name="acaEYm" label="졸업일"><Input placeholder="20220228" /></Form.Item>
-          <Form.Item name="acaYn" label="졸업구분"><Select options={GRAD_OPTIONS} /></Form.Item>
+          <Form.Item name="acaYn" label="졸업구분"><Select options={getCodeOptions('EDU_STATUS')} /></Form.Item>
           <Form.Item name="acaType" label="최종학력여부">
             <Select options={[{ value: 'Y', label: '예' }, { value: 'N', label: '아니오' }]} />
           </Form.Item>

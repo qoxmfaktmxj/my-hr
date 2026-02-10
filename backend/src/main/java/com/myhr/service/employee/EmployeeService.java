@@ -2,6 +2,8 @@ package com.myhr.service.employee;
 
 import com.myhr.domain.employee.Employee;
 import com.myhr.domain.employee.EmployeeRepository;
+import com.myhr.domain.system.CommonCode;
+import com.myhr.domain.system.CommonCodeRepository;
 import com.myhr.dto.employee.DashboardStatsDto;
 import com.myhr.dto.employee.EmployeeCreateRequest;
 import com.myhr.dto.employee.EmployeeDto;
@@ -25,6 +27,7 @@ public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final OrganizationRepository organizationRepository;
+    private final CommonCodeRepository commonCodeRepository;
 
     /**
      * 사원 목록 조회 (List)
@@ -190,19 +193,17 @@ public class EmployeeService {
                 .email(employee.getEmail())
                 .hpNo(employee.getHpNo())
                 .statusCd(employee.getStatusCd())
-                .statusNm(getStatusName(employee.getStatusCd()))
+                .statusNm(getCodeName(employee.getEnterCd(), "STATUS", employee.getStatusCd()))
                 .build();
     }
 
     /**
-     * 재직상태코드 -> 재직상태명
+     * 공통코드에서 코드명 조회
      */
-    private String getStatusName(String statusCd) {
-        return switch (statusCd) {
-            case "10" -> "재직";
-            case "20" -> "휴직";
-            case "30" -> "퇴직";
-            default -> "기타";
-        };
+    private String getCodeName(String enterCd, String grcodeCd, String code) {
+        if (code == null) return null;
+        return commonCodeRepository.findById(new CommonCode.CommonCodeId(enterCd, grcodeCd, code))
+                .map(CommonCode::getCodeNm)
+                .orElse(code);
     }
 }

@@ -253,3 +253,65 @@ INSERT INTO TSYS303 (ENTER_CD, MAIN_MENU_CD, PRIOR_MENU_CD, MENU_CD, MENU_SEQ, M
 -- 시스템관리 (M06)
 INSERT INTO TSYS303 (ENTER_CD, MAIN_MENU_CD, PRIOR_MENU_CD, MENU_CD, MENU_SEQ, MENU_NM, TYPE, PRG_CD, SEQ, CHKDATE, CHKID) VALUES
 ('BS', 'M06', 'M06', 'M06001', 1, '메뉴관리', 'P', '/system/menu', 1, CURRENT_TIMESTAMP(), 'SYSTEM');
+
+-- ============================================================
+-- 14. TSYS005 (공통코드 - 세부코드관리)
+--     NOTE1 = Tag 색상값 (프론트에서 사용)
+-- ============================================================
+
+-- 재직상태 (STATUS)
+INSERT INTO TSYS005 (ENTER_CD, GRCODE_CD, CODE, CODE_NM, CODE_ENG_NM, SEQ, VISUAL_YN, USE_YN, NOTE1, CHKDATE, CHKID) VALUES
+('BS', 'STATUS', '10', '재직', 'Active',  1, 'Y', 'Y', 'green',  CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'STATUS', '20', '휴직', 'Leave',   2, 'Y', 'Y', 'orange', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'STATUS', '30', '퇴직', 'Retired', 3, 'Y', 'Y', 'red',    CURRENT_TIMESTAMP(), 'SYSTEM');
+
+-- 성별 (SEX_TYPE)
+INSERT INTO TSYS005 (ENTER_CD, GRCODE_CD, CODE, CODE_NM, CODE_ENG_NM, SEQ, VISUAL_YN, USE_YN, CHKDATE, CHKID) VALUES
+('BS', 'SEX_TYPE', 'M', '남성', 'Male',   1, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'SEX_TYPE', 'F', '여성', 'Female', 2, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM');
+
+-- 조직유형 (ORG_TYPE)
+INSERT INTO TSYS005 (ENTER_CD, GRCODE_CD, CODE, CODE_NM, CODE_ENG_NM, SEQ, VISUAL_YN, USE_YN, NOTE1, CHKDATE, CHKID) VALUES
+('BS', 'ORG_TYPE', 'T001', '대표이사', 'CEO',      1, 'Y', 'Y', 'red',   CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'ORG_TYPE', 'T002', '본부',     'Division', 2, 'Y', 'Y', 'blue',  CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'ORG_TYPE', 'T003', '팀',       'Team',     3, 'Y', 'Y', 'green', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'ORG_TYPE', 'T004', '파트',     'Part',     4, 'Y', 'Y', 'cyan',  CURRENT_TIMESTAMP(), 'SYSTEM');
+
+-- 가족관계 (FAM_CD)
+INSERT INTO TSYS005 (ENTER_CD, GRCODE_CD, CODE, CODE_NM, CODE_ENG_NM, SEQ, VISUAL_YN, USE_YN, CHKDATE, CHKID) VALUES
+('BS', 'FAM_CD', '01', '모',     'Mother',  1, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'FAM_CD', '02', '부',     'Father',  2, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'FAM_CD', '03', '자녀',   'Child',   3, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'FAM_CD', '04', '배우자', 'Spouse',  4, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'FAM_CD', '05', '형제',   'Sibling', 5, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'FAM_CD', '99', '기타',   'Others',  9, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM');
+
+-- 연락처구분 (CONT_TYPE)
+INSERT INTO TSYS005 (ENTER_CD, GRCODE_CD, CODE, CODE_NM, CODE_ENG_NM, SEQ, VISUAL_YN, USE_YN, CHKDATE, CHKID) VALUES
+('BS', 'CONT_TYPE', '01', '휴대폰',     'Mobile',    1, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'CONT_TYPE', '02', '자택전화',   'Home',      2, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'CONT_TYPE', '03', '개인이메일', 'Email',     3, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'CONT_TYPE', '04', '비상연락처', 'Emergency', 4, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'CONT_TYPE', '05', '자택주소',   'Address',   5, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'CONT_TYPE', '99', '기타',       'Others',    9, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM');
+
+-- 병역상태 (ARMY_TRANSFER)
+INSERT INTO TSYS005 (ENTER_CD, GRCODE_CD, CODE, CODE_NM, CODE_ENG_NM, SEQ, VISUAL_YN, USE_YN, CHKDATE, CHKID) VALUES
+('BS', 'ARMY_TRANSFER', '01', '필',       'Completed', 1, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'ARMY_TRANSFER', '02', '미필',     'Not yet',   2, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'ARMY_TRANSFER', '03', '면제',     'Exempted',  3, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'ARMY_TRANSFER', '04', '해당없음', 'N/A',       4, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM');
+
+-- 군별 (ARMY_CD)
+INSERT INTO TSYS005 (ENTER_CD, GRCODE_CD, CODE, CODE_NM, CODE_ENG_NM, SEQ, VISUAL_YN, USE_YN, CHKDATE, CHKID) VALUES
+('BS', 'ARMY_CD', '01', '육군',   'Army',    1, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'ARMY_CD', '02', '해군',   'Navy',    2, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'ARMY_CD', '03', '공군',   'Air Force', 3, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'ARMY_CD', '04', '해병대', 'Marines', 4, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM');
+
+-- 학력상태 (EDU_STATUS)
+INSERT INTO TSYS005 (ENTER_CD, GRCODE_CD, CODE, CODE_NM, CODE_ENG_NM, SEQ, VISUAL_YN, USE_YN, CHKDATE, CHKID) VALUES
+('BS', 'EDU_STATUS', '10', '졸업', 'Graduated',  1, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'EDU_STATUS', '20', '재학', 'Studying',   2, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'EDU_STATUS', '30', '중퇴', 'Dropped',    3, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'EDU_STATUS', '40', '수료', 'Completed',  4, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM');

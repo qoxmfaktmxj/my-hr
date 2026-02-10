@@ -20,20 +20,11 @@ import {
 } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import { useEmployeeDetail, useUpdateEmployee, useRetireEmployee } from '../../hooks/useEmployee';
+import { useCodeMap } from '../../hooks/useCommonCode';
 import EmployeeFormModal from './EmployeeFormModal';
 import type { Employee } from '../../api/employeeApi';
 
 const { Title } = Typography;
-
-function getStatusTag(statusCd?: string, statusNm?: string) {
-  const text = statusNm || statusCd || '-';
-  switch (statusCd) {
-    case '10': return <Tag color="green">{text}</Tag>;
-    case '20': return <Tag color="orange">{text}</Tag>;
-    case '30': return <Tag color="red">{text}</Tag>;
-    default:   return <Tag>{text}</Tag>;
-  }
-}
 
 function formatDate(ymd?: string) {
   if (!ymd || ymd.length !== 8) return '-';
@@ -50,6 +41,7 @@ function EmployeeDetail() {
   const { data: employee, isLoading } = useEmployeeDetail(sabun || '');
   const updateMutation = useUpdateEmployee();
   const retireMutation = useRetireEmployee();
+  const { getCodeName, getCodeColor } = useCodeMap();
 
   const handleUpdate = (values: Partial<Employee>) => {
     if (!sabun) return;
@@ -126,11 +118,15 @@ function EmployeeDetail() {
       <Card>
         <Descriptions bordered column={{ xs: 1, sm: 2 }}>
           <Descriptions.Item label="사번">{employee.sabun}</Descriptions.Item>
-          <Descriptions.Item label="상태">{getStatusTag(employee.statusCd, employee.statusNm)}</Descriptions.Item>
+          <Descriptions.Item label="상태">
+            <Tag color={getCodeColor('STATUS', employee.statusCd) || 'default'}>
+              {employee.statusNm || getCodeName('STATUS', employee.statusCd)}
+            </Tag>
+          </Descriptions.Item>
           <Descriptions.Item label="한글성명">{employee.korNm}</Descriptions.Item>
           <Descriptions.Item label="영문성명">{employee.engNm || '-'}</Descriptions.Item>
           <Descriptions.Item label="성별">
-            {employee.sexType === 'M' ? '남성' : employee.sexType === 'F' ? '여성' : '-'}
+            {getCodeName('SEX_TYPE', employee.sexType) || '-'}
           </Descriptions.Item>
           <Descriptions.Item label="입사일자">{formatDate(employee.empYmd)}</Descriptions.Item>
           {employee.retYmd && (
