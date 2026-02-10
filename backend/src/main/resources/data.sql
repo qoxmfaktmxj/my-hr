@@ -210,3 +210,46 @@ INSERT INTO THRM128 (ENTER_CD, SABUN, SEQ, PRIZE_YMD, PRIZE_CD, PRIZE_OFFICE_NM,
 -- ============================================================
 INSERT INTO THRM129 (ENTER_CD, SABUN, SEQ, PUNISH_YMD, PUNISH_CD, PUNISH_GB, SDATE, EDATE, PUNISH_MEMO, NOTE, CHKDATE, CHKID) VALUES
 ('BS', '20240005', 1, '20240815', '01', '01', '20240815', '20240915', '지각 3회 누적', '경고', CURRENT_TIMESTAMP(), 'SYSTEM');
+
+-- ============================================================
+-- 12. TSYS309 (메인메뉴관리 - 대메뉴)
+-- ============================================================
+INSERT INTO TSYS309 (ENTER_CD, MAIN_MENU_CD, MAIN_MENU_NM, SEQ, ICON_CLASS, USE_YN, CHKDATE, CHKID) VALUES
+('BS', 'M01', '대시보드', 1, 'DashboardOutlined', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'M02', '사원관리', 2, 'UserOutlined', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'M03', '조직관리', 3, 'TeamOutlined', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'M04', '급여관리', 4, 'DollarOutlined', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'M05', '근태관리', 5, 'CalendarOutlined', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'M06', '시스템관리', 6, 'SettingOutlined', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM');
+
+-- ============================================================
+-- 13. TSYS303 (메뉴프로그램관리 - 서브메뉴)
+-- ============================================================
+-- 대시보드 (M01) - 서브메뉴 없이 대메뉴 자체가 링크
+INSERT INTO TSYS303 (ENTER_CD, MAIN_MENU_CD, PRIOR_MENU_CD, MENU_CD, MENU_SEQ, MENU_NM, TYPE, PRG_CD, SEQ, CHKDATE, CHKID) VALUES
+('BS', 'M01', 'M01', 'M01001', 1, '대시보드', 'P', '/', 1, CURRENT_TIMESTAMP(), 'SYSTEM');
+
+-- 사원관리 (M02)
+INSERT INTO TSYS303 (ENTER_CD, MAIN_MENU_CD, PRIOR_MENU_CD, MENU_CD, MENU_SEQ, MENU_NM, TYPE, PRG_CD, SEQ, CHKDATE, CHKID) VALUES
+('BS', 'M02', 'M02', 'M02001', 1, '사원목록', 'P', '/employee', 1, CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'M02', 'M02', 'M02002', 1, '사원등록', 'P', '/employee/register', 2, CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'M02', 'M02', 'M02003', 1, '인사기본', 'P', '/personnel', 3, CURRENT_TIMESTAMP(), 'SYSTEM');
+
+-- 조직관리 (M03)
+INSERT INTO TSYS303 (ENTER_CD, MAIN_MENU_CD, PRIOR_MENU_CD, MENU_CD, MENU_SEQ, MENU_NM, TYPE, PRG_CD, SEQ, CHKDATE, CHKID) VALUES
+('BS', 'M03', 'M03', 'M03001', 1, '부서관리', 'P', '/organization/department', 1, CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'M03', 'M03', 'M03002', 1, '직급관리', 'P', '/organization/position', 2, CURRENT_TIMESTAMP(), 'SYSTEM');
+
+-- 급여관리 (M04)
+INSERT INTO TSYS303 (ENTER_CD, MAIN_MENU_CD, PRIOR_MENU_CD, MENU_CD, MENU_SEQ, MENU_NM, TYPE, PRG_CD, SEQ, CHKDATE, CHKID) VALUES
+('BS', 'M04', 'M04', 'M04001', 1, '급여계산', 'P', '/payroll/salary', 1, CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'M04', 'M04', 'M04002', 1, '연말정산', 'P', '/payroll/yearend', 2, CURRENT_TIMESTAMP(), 'SYSTEM');
+
+-- 근태관리 (M05)
+INSERT INTO TSYS303 (ENTER_CD, MAIN_MENU_CD, PRIOR_MENU_CD, MENU_CD, MENU_SEQ, MENU_NM, TYPE, PRG_CD, SEQ, CHKDATE, CHKID) VALUES
+('BS', 'M05', 'M05', 'M05001', 1, '일일근태', 'P', '/attendance/daily', 1, CURRENT_TIMESTAMP(), 'SYSTEM'),
+('BS', 'M05', 'M05', 'M05002', 1, '휴가관리', 'P', '/attendance/vacation', 2, CURRENT_TIMESTAMP(), 'SYSTEM');
+
+-- 시스템관리 (M06)
+INSERT INTO TSYS303 (ENTER_CD, MAIN_MENU_CD, PRIOR_MENU_CD, MENU_CD, MENU_SEQ, MENU_NM, TYPE, PRG_CD, SEQ, CHKDATE, CHKID) VALUES
+('BS', 'M06', 'M06', 'M06001', 1, '메뉴관리', 'P', '/system/menu', 1, CURRENT_TIMESTAMP(), 'SYSTEM');

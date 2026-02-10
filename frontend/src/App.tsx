@@ -9,6 +9,7 @@ import EmployeeDetail from './pages/employee/EmployeeDetail';
 import EmployeeRegister from './pages/employee/EmployeeRegister';
 import PersonnelInfo from './pages/personnel/PersonnelInfo';
 import DepartmentList from './pages/organization/DepartmentList';
+import MenuManagement from './pages/system/MenuManagement';
 import ProtectedRoute from './components/ProtectedRoute';
 import './App.css';
 
@@ -36,6 +37,7 @@ function App() {
             <Route path="personnel" element={<PersonnelInfo />} />
             <Route path="personnel/:sabun" element={<PersonnelInfo />} />
             <Route path="organization/department" element={<DepartmentList />} />
+            <Route path="system/menu" element={<MenuManagement />} />
           </Route>
         </Routes>
       </BrowserRouter>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import {
   Layout,
@@ -9,6 +9,7 @@ import {
   Space,
   Typography,
   Tag,
+  Spin,
 } from 'antd';
 import {
   DashboardOutlined,
@@ -22,63 +23,55 @@ import {
   BellOutlined,
   LogoutOutlined,
   IdcardOutlined,
+  AppstoreOutlined,
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { useAuthStore } from '../stores/useAuthStore';
 import { logout as logoutApi } from '../api/authApi';
+import { useMenuTree } from '../hooks/useMenu';
+import type { MenuTreeNode } from '../api/menuApi';
 
 const { Header, Sider, Content } = Layout;
 const { Text } = Typography;
 
-const menuItems: MenuProps['items'] = [
-  {
-    key: '/',
-    icon: <DashboardOutlined />,
-    label: '대시보드',
-  },
-  {
-    key: 'employee',
-    icon: <UserOutlined />,
-    label: '사원관리',
-    children: [
-      { key: '/employee', label: '사원목록' },
-      { key: '/employee/register', label: '사원등록' },
-      { key: '/personnel', label: '인사기본' },
-    ],
-  },
-  {
-    key: 'organization',
-    icon: <TeamOutlined />,
-    label: '조직관리',
-    children: [
-      { key: '/organization/department', label: '부서관리' },
-      { key: '/organization/position', label: '직급관리' },
-    ],
-  },
-  {
-    key: 'payroll',
-    icon: <DollarOutlined />,
-    label: '급여관리',
-    children: [
-      { key: '/payroll/salary', label: '급여계산' },
-      { key: '/payroll/yearend', label: '연말정산' },
-    ],
-  },
-  {
-    key: 'attendance',
-    icon: <CalendarOutlined />,
-    label: '근태관리',
-    children: [
-      { key: '/attendance/daily', label: '일일근태' },
-      { key: '/attendance/vacation', label: '휴가관리' },
-    ],
-  },
-  {
-    key: 'settings',
-    icon: <SettingOutlined />,
-    label: '설정',
-  },
-];
+/** iconClass 문자열 → Ant Design 아이콘 컴포넌트 매핑 */
+const ICON_MAP: Record<string, React.ReactNode> = {
+  DashboardOutlined: <DashboardOutlined />,
+  UserOutlined: <UserOutlined />,
+  TeamOutlined: <TeamOutlined />,
+  DollarOutlined: <DollarOutlined />,
+  CalendarOutlined: <CalendarOutlined />,
+  SettingOutlined: <SettingOutlined />,
+  IdcardOutlined: <IdcardOutlined />,
+  AppstoreOutlined: <AppstoreOutlined />,
+};
+
+function getIcon(iconClass?: string): React.ReactNode {
+  if (!iconClass) return undefined;
+  return ICON_MAP[iconClass] || <AppstoreOutlined />;
+}
+
+/** 메뉴 트리 데이터 → Ant Design Menu items 변환 */
+function toMenuItems(tree: MenuTreeNode[]): MenuProps['items'] {
+  return tree.map((node) => {
+    if (node.children && node.children.length > 0) {
+      return {
+        key: node.key,
+        icon: getIcon(node.icon),
+        label: node.label,
+        children: node.children.map((child) => ({
+          key: child.key,
+          label: child.label,
+        })),
+      };
+    }
+    return {
+      key: node.key,
+      icon: getIcon(node.icon),
+      label: node.label,
+    };
+  });
+}
 
 function MainLayout() {
   const [collapsed, setCollapsed] = useState(false);
@@ -88,6 +81,15 @@ function MainLayout() {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
+
+  // DB에서 메뉴 조회
+  const { data: menuTree, isLoading: menuLoading } = useMenuTree();
+
+  // 메뉴 트리 → Ant Design items 변환
+  const menuItems = useMemo(() => {
+    if (!menuTree) return [];
+    return toMenuItems(menuTree);
+  }, [menuTree]);
 
   const handleMenuClick: MenuProps['onClick'] = (e) => {
     navigate(e.key);
@@ -163,13 +165,19 @@ function MainLayout() {
         }}>
           {collapsed ? 'HR' : 'my-hr'}
         </div>
-        <Menu
-          theme="dark"
-          mode="inline"
-          selectedKeys={[location.pathname]}
-          items={menuItems}
-          onClick={handleMenuClick}
-        />
+        {menuLoading ? (
+          <div style={{ textAlign: 'center', padding: 24 }}>
+            <Spin size="small" />
+          </div>
+        ) : (
+          <Menu
+            theme="dark"
+            mode="inline"
+            selectedKeys={[location.pathname]}
+            items={menuItems}
+            onClick={handleMenuClick}
+          />
+        )}
       </Sider>
       <Layout style={{ marginLeft: collapsed ? 80 : 200, transition: 'all 0.2s' }}>
         <Header style={{
