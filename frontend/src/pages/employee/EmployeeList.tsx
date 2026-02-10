@@ -26,6 +26,7 @@ import type { ColumnsType, TablePaginationConfig } from 'antd/es/table';
 import dayjs from 'dayjs';
 import type { Employee } from '../../api/employeeApi';
 import { useEmployeeList, useCreateEmployee, useUpdateEmployee, useRetireEmployee } from '../../hooks/useEmployee';
+import { useCodeMap } from '../../hooks/useCommonCode';
 import EmployeeFormModal from './EmployeeFormModal';
 
 const { Title } = Typography;
@@ -36,6 +37,7 @@ interface TableEmployee extends Employee {
 
 function EmployeeList() {
   const navigate = useNavigate();
+  const { getCodeName, getCodeOptions, getCodeColor } = useCodeMap();
 
   // 검색 & 페이지네이션 상태
   const [searchText, setSearchText] = useState('');
@@ -96,13 +98,8 @@ function EmployeeList() {
       key: 'statusCd',
       width: 80,
       render: (status: string, record) => {
-        let color = 'default';
-        const text = record.statusNm || status;
-        switch (status) {
-          case '10': color = 'green'; break;
-          case '20': color = 'orange'; break;
-          case '30': color = 'red'; break;
-        }
+        const text = record.statusNm || getCodeName('STATUS', status);
+        const color = getCodeColor('STATUS', status) || 'default';
         return <Tag color={color}>{text}</Tag>;
       },
     },
@@ -232,11 +229,7 @@ function EmployeeList() {
               allowClear
               value={statusFilter}
               onChange={setStatusFilter}
-              options={[
-                { value: '10', label: '재직' },
-                { value: '20', label: '휴직' },
-                { value: '30', label: '퇴직' },
-              ]}
+              options={getCodeOptions('STATUS')}
             />
           </Col>
           <Col>

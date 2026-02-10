@@ -1,5 +1,6 @@
 import { Descriptions, Tag, Spin } from 'antd';
 import { useEmployeeDetail } from '../../../hooks/useEmployee';
+import { useCodeMap } from '../../../hooks/useCommonCode';
 
 function formatDate(ymd?: string) {
   if (!ymd || ymd.length !== 8) return '-';
@@ -8,6 +9,7 @@ function formatDate(ymd?: string) {
 
 export default function PersonnelBasicTab({ sabun }: { sabun: string }) {
   const { data: emp, isLoading } = useEmployeeDetail(sabun);
+  const { getCodeName, getCodeColor } = useCodeMap();
 
   if (isLoading) return <Spin />;
   if (!emp) return <p>사원 정보 없음</p>;
@@ -16,14 +18,13 @@ export default function PersonnelBasicTab({ sabun }: { sabun: string }) {
     <Descriptions bordered column={{ xs: 1, sm: 2 }} size="small">
       <Descriptions.Item label="사번">{emp.sabun}</Descriptions.Item>
       <Descriptions.Item label="상태">
-        {emp.statusCd === '10' ? <Tag color="green">{emp.statusNm || '재직'}</Tag> :
-         emp.statusCd === '20' ? <Tag color="orange">{emp.statusNm || '휴직'}</Tag> :
-         emp.statusCd === '30' ? <Tag color="red">{emp.statusNm || '퇴직'}</Tag> :
-         <Tag>{emp.statusNm || '-'}</Tag>}
+        <Tag color={getCodeColor('STATUS', emp.statusCd) || 'default'}>
+          {emp.statusNm || getCodeName('STATUS', emp.statusCd)}
+        </Tag>
       </Descriptions.Item>
       <Descriptions.Item label="한글성명">{emp.korNm}</Descriptions.Item>
       <Descriptions.Item label="영문성명">{emp.engNm || '-'}</Descriptions.Item>
-      <Descriptions.Item label="성별">{emp.sexType === 'M' ? '남성' : emp.sexType === 'F' ? '여성' : '-'}</Descriptions.Item>
+      <Descriptions.Item label="성별">{getCodeName('SEX_TYPE', emp.sexType) || '-'}</Descriptions.Item>
       <Descriptions.Item label="입사일자">{formatDate(emp.empYmd)}</Descriptions.Item>
       {emp.retYmd && <Descriptions.Item label="퇴직일자">{formatDate(emp.retYmd)}</Descriptions.Item>}
       <Descriptions.Item label="이메일">{emp.email || '-'}</Descriptions.Item>

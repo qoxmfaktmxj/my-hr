@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Modal, Form, Input, Select, DatePicker, Row, Col } from 'antd';
 import dayjs from 'dayjs';
 import type { Employee } from '../../api/employeeApi';
+import { useCodeMap } from '../../hooks/useCommonCode';
 
 interface EmployeeFormModalProps {
   open: boolean;
@@ -14,6 +15,7 @@ interface EmployeeFormModalProps {
 function EmployeeFormModal({ open, employee, loading, onOk, onCancel }: EmployeeFormModalProps) {
   const [form] = Form.useForm();
   const isEdit = !!employee;
+  const { getCodeOptions } = useCodeMap();
 
   useEffect(() => {
     if (open) {
@@ -79,10 +81,7 @@ function EmployeeFormModal({ open, employee, loading, onOk, onCancel }: Employee
               label="성별"
               rules={[{ required: true, message: '성별을 선택하세요' }]}
             >
-              <Select placeholder="성별 선택">
-                <Select.Option value="M">남성</Select.Option>
-                <Select.Option value="F">여성</Select.Option>
-              </Select>
+              <Select placeholder="성별 선택" options={getCodeOptions('SEX_TYPE')} />
             </Form.Item>
           </Col>
           <Col span={12}>

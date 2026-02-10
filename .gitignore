@@ -1,7 +1,5 @@
 # Dependencies
 node_modules/
-.pnp/
-.pnp.js
 
 # Build outputs
 dist/
@@ -49,3 +47,10 @@ coverage/
 tmp/
 temp/
 *.tmp
+
+# Claude
+/.claude/settings.local.json
+
+# EHR DB 명세 (상위 폴더 참조용, 프로젝트 소스 아님)
+/docs/
+*_split/

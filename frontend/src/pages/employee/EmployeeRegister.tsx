@@ -16,6 +16,7 @@ import { ArrowLeftOutlined, SaveOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 import { useCreateEmployee } from '../../hooks/useEmployee';
 import { useOrganizationList } from '../../hooks/useOrganization';
+import { useCodeMap } from '../../hooks/useCommonCode';
 import type { Employee } from '../../api/employeeApi';
 
 const { Title } = Typography;
@@ -25,6 +26,7 @@ function EmployeeRegister() {
   const navigate = useNavigate();
   const createMutation = useCreateEmployee();
   const { data: organizations = [] } = useOrganizationList({ enterCd: 'BS' });
+  const { getCodeOptions } = useCodeMap();
 
   const handleSubmit = async () => {
     try {
@@ -64,10 +66,7 @@ function EmployeeRegister() {
           label="성별"
           rules={[{ required: true, message: '성별을 선택하세요' }]}
         >
-          <Select placeholder="성별 선택">
-            <Select.Option value="M">남성</Select.Option>
-            <Select.Option value="F">여성</Select.Option>
-          </Select>
+          <Select placeholder="성별 선택" options={getCodeOptions('SEX_TYPE')} />
         </Form.Item>
       </Col>
       <Col span={12}>

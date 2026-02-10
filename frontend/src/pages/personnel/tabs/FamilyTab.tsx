@@ -2,18 +2,14 @@ import { useState } from 'react';
 import { Table, Button, Modal, Form, Input, Select, Space, Popconfirm } from 'antd';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useFamilies, useSaveFamily, useDeleteFamily } from '../../../hooks/usePersonnel';
+import { useCodeMap } from '../../../hooks/useCommonCode';
 import type { Family } from '../../../api/personnelApi';
-
-const FAM_CD_OPTIONS = [
-  { value: '01', label: '모' }, { value: '02', label: '부' },
-  { value: '03', label: '자녀' }, { value: '04', label: '배우자' },
-  { value: '05', label: '형제' }, { value: '99', label: '기타' },
-];
 
 export default function FamilyTab({ sabun }: { sabun: string }) {
   const { data = [], isLoading } = useFamilies(sabun);
   const saveMutation = useSaveFamily(sabun);
   const deleteMutation = useDeleteFamily(sabun);
+  const { getCodeName, getCodeOptions } = useCodeMap();
   const [open, setOpen] = useState(false);
   const [form] = Form.useForm();
 
@@ -26,9 +22,9 @@ export default function FamilyTab({ sabun }: { sabun: string }) {
 
   const columns = [
     { title: '성명', dataIndex: 'famNm', width: 100 },
-    { title: '관계', dataIndex: 'famCd', width: 80, render: (v: string) => FAM_CD_OPTIONS.find(o => o.value === v)?.label || v },
+    { title: '관계', dataIndex: 'famCd', width: 80, render: (v: string) => getCodeName('FAM_CD', v) || v },
     { title: '생년월일', dataIndex: 'famYmd', width: 100 },
-    { title: '성별', dataIndex: 'sexType', width: 60, render: (v: string) => v === 'M' ? '남' : v === 'F' ? '여' : '-' },
+    { title: '성별', dataIndex: 'sexType', width: 60, render: (v: string) => getCodeName('SEX_TYPE', v) || '-' },
     { title: '연락처', dataIndex: 'telNo', width: 130 },
     { title: '동거', dataIndex: 'famYn', width: 60, render: (v: string) => v === 'Y' ? '예' : '아니오' },
     { title: '비고', dataIndex: 'note' },
@@ -53,13 +49,13 @@ export default function FamilyTab({ sabun }: { sabun: string }) {
           <Space.Compact style={{ width: '100%' }}>
             <Form.Item name="famNm" label="성명" rules={[{ required: true }]} style={{ flex: 1 }}><Input /></Form.Item>
             <Form.Item name="famCd" label="관계" rules={[{ required: true }]} style={{ width: 120 }}>
-              <Select options={FAM_CD_OPTIONS} />
+              <Select options={getCodeOptions('FAM_CD')} />
             </Form.Item>
           </Space.Compact>
           <Space.Compact style={{ width: '100%' }}>
             <Form.Item name="famYmd" label="생년월일" style={{ flex: 1 }}><Input placeholder="19900101" /></Form.Item>
             <Form.Item name="sexType" label="성별" style={{ width: 100 }}>
-              <Select options={[{ value: 'M', label: '남' }, { value: 'F', label: '여' }]} />
+              <Select options={getCodeOptions('SEX_TYPE')} />
             </Form.Item>
           </Space.Compact>
           <Form.Item name="telNo" label="연락처"><Input placeholder="010-1234-5678" /></Form.Item>

@@ -2,17 +2,13 @@ import { useState } from 'react';
 import { Table, Button, Modal, Form, Input, Select, Popconfirm } from 'antd';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useContacts, useSaveContact, useDeleteContact } from '../../../hooks/usePersonnel';
-
-const CONT_TYPE_OPTIONS = [
-  { value: '01', label: '휴대폰' }, { value: '02', label: '자택전화' },
-  { value: '03', label: '개인이메일' }, { value: '04', label: '비상연락처' },
-  { value: '05', label: '자택주소' }, { value: '99', label: '기타' },
-];
+import { useCodeMap } from '../../../hooks/useCommonCode';
 
 export default function ContactTab({ sabun }: { sabun: string }) {
   const { data = [], isLoading } = useContacts(sabun);
   const saveMutation = useSaveContact(sabun);
   const deleteMutation = useDeleteContact(sabun);
+  const { getCodeName, getCodeOptions } = useCodeMap();
   const [open, setOpen] = useState(false);
   const [form] = Form.useForm();
 
@@ -24,7 +20,7 @@ export default function ContactTab({ sabun }: { sabun: string }) {
   };
 
   const columns = [
-    { title: '구분', dataIndex: 'contType', width: 120, render: (v: string) => CONT_TYPE_OPTIONS.find(o => o.value === v)?.label || v },
+    { title: '구분', dataIndex: 'contType', width: 120, render: (v: string) => getCodeName('CONT_TYPE', v) || v },
     { title: '연락처', dataIndex: 'contAddress' },
     {
       title: '', width: 60,
@@ -45,7 +41,7 @@ export default function ContactTab({ sabun }: { sabun: string }) {
       <Modal title="연락처 추가" open={open} onOk={handleSave} onCancel={() => setOpen(false)} okText="저장" cancelText="취소" confirmLoading={saveMutation.isPending} destroyOnClose>
         <Form form={form} layout="vertical" style={{ marginTop: 16 }}>
           <Form.Item name="contType" label="구분" rules={[{ required: true }]}>
-            <Select options={CONT_TYPE_OPTIONS} placeholder="선택" />
+            <Select options={getCodeOptions('CONT_TYPE')} placeholder="선택" />
           </Form.Item>
           <Form.Item name="contAddress" label="연락처" rules={[{ required: true }]}>
             <Input placeholder="전화번호, 이메일, 주소 등" />
