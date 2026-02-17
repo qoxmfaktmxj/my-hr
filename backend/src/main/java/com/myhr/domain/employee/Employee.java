@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "THRM100")  // EHR 테이블명 참조
+@Table(name = "emp_master")
 @Getter
 @Setter
 @NoArgsConstructor

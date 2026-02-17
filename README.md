@@ -93,9 +93,9 @@ my-hr/
 │       │   │   ├── Education.java, Certificate.java, Career.java
 │       │   │   └── PersonnelBasic.java
 │       │   └── system/
-│       │       ├── MainMenu.java (TSYS309)    # 대메뉴
-│       │       ├── MenuItem.java (TSYS303)    # 서브메뉴
-│       │       ├── CommonCode.java (TSYS005)  # 공통코드
+│       │       ├── MainMenu.java              # 대메뉴
+│       │       ├── MenuItem.java              # 서브메뉴
+│       │       ├── CommonCode.java            # 공통코드
 │       │       └── CommonCodeRepository.java
 │       ├── service/
 │       │   ├── employee/EmployeeService.java
@@ -152,16 +152,15 @@ cd backend
 
 ### 3. 인사기본정보 (7개 탭 CRUD)
 사원 선택 후 7개 카테고리별 탭으로 관리:
-| 탭 | 테이블 | 기능 |
-|----|--------|------|
-| 기본정보 | Employee | 조회 |
-| 가족사항 | THRM305 | 추가/삭제 (Table + Modal) |
-| 연락처 | THRM310 | 추가/삭제 (Table + Modal) |
-| 병역사항 | THRM315 | 단건 조회/수정 (Form) |
-| 학력사항 | THRM320 | 추가/삭제 (Table + Modal) |
-| 자격증 | THRM325 | 추가/삭제 (Table + Modal) |
-| 경력사항 | THRM330 | 추가/삭제 (Table + Modal) |
-
+| 탭 | 기능 |
+|----|------|
+| 기본정보 | 조회 |
+| 가족사항 | 추가/삭제 (Table + Modal) |
+| 연락처 | 추가/삭제 (Table + Modal) |
+| 병역사항 | 단건 조회/수정 (Form) |
+| 학력사항 | 추가/삭제 (Table + Modal) |
+| 자격증 | 추가/삭제 (Table + Modal) |
+| 경력사항 | 추가/삭제 (Table + Modal) |
 - Ant Design `Tabs` + `destroyInactiveTabPane`으로 탭 전환 시 lazy 렌더링
 - 단건 데이터 없을 시 204 No Content 응답 처리
 
@@ -171,14 +170,13 @@ cd backend
 - 미사용 부서 포함/미포함 토글
 
 ### 5. 메뉴관리 시스템
-- **DB 테이블**: TSYS309 (대메뉴) + TSYS303 (서브메뉴)
 - **동적 사이드바**: 로그인 시 메뉴 트리 API 호출 → 사이드바 자동 구성
 - **아이콘 매핑**: DB에 문자열로 저장 ("DashboardOutlined") → 컴포넌트 매핑
 - **메뉴관리 페이지**: 좌측 대메뉴 리스트 + 우측 서브메뉴 테이블 CRUD
 - 단일 서브메뉴만 있는 대메뉴는 직접 링크로 동작 (children 미생성)
 - React Query 5분 캐시 (staleTime)
 
-### 6. 공통코드 시스템 (TSYS005)
+### 6. 공통코드 시스템
 하드코딩된 코드값들을 DB 공통코드로 일원화 관리:
 
 **구현 구조:**
@@ -236,54 +234,10 @@ API 요청 → Axios 인터셉터에서 Authorization 헤더 자동 첨부
 → React Query 캐시 (staleTime: 5분)
 ```
 
-## DB 테이블 현황
-
-### 사용 중인 테이블
-| 테이블 | 설명 | PK |
-|--------|------|----|
-| THRM100 | 사원마스터 | ENTER_CD + SABUN |
-| THRM305 | 가족사항 | ENTER_CD + SABUN + FAM_NM + FAM_CD + SDATE |
-| THRM310 | 연락처 | ENTER_CD + SABUN + CONT_TYPE |
-| THRM315 | 병역사항 | ENTER_CD + SABUN |
-| THRM320 | 학력사항 | ENTER_CD + SABUN + SEQ |
-| THRM325 | 자격증 | ENTER_CD + SABUN + SEQ |
-| THRM330 | 경력사항 | ENTER_CD + SABUN + SEQ |
-| TORG100 | 조직마스터 | ENTER_CD + ORG_CD + SDATE |
-| TSYS309 | 대메뉴 | ENTER_CD + MENU_CD |
-| TSYS303 | 서브메뉴(프로그램) | ENTER_CD + PRG_CD |
-| TSYS005 | 공통코드(세부코드) | ENTER_CD + GRCODE_CD + CODE |
-| TSYS_USERS | 사용자인증 | ENTER_CD + SABUN |
-
-## DB 명세 참조
-
-EHR 시스템 DB 명세는 상위 폴더에서 참조합니다.
-
-```
-../                          # 상위 폴더 (EHR_DB명세)
-├── README.md                # DB 전체 현황
-├── Table_summary.md         # 테이블 목록 (1,092개)
-├── Procedure_summary.md     # 프로시저 목록 (371개)
-├── Function_summary.md      # 함수 목록 (525개)
-├── Package_summary.md       # 패키지 목록 (108개)
-├── View_summary.md          # 뷰 목록 (41개)
-├── docs/                    # 프로시저/함수 매뉴얼 (896개)
-└── *_split/                 # 상세 DDL (분리된 파일)
-```
-
-### 도메인별 접두사
-| 접두사 | 도메인 | 설명 |
-|--------|--------|------|
-| `THRM` | 인사관리 | Human Resource Management |
-| `TCPN` | 급여 | Compensation |
-| `TBEN` | 복리후생 | Benefits |
-| `TTIM` | 근태관리 | Time Management |
-| `TORG` | 조직관리 | Organization |
-| `TSYS` | 시스템관리 | System |
-
 ## 향후 계획
 
 - [ ] PostgreSQL 마이그레이션 (application.yml 설정 변경)
-- [ ] 공통코드 관리 화면 (TSYS005 CRUD 페이지)
+- [ ] 공통코드 관리 화면 (CRUD 페이지)
 - [ ] 급여관리 모듈
 - [ ] 근태관리 모듈
 - [ ] 복리후생 모듈

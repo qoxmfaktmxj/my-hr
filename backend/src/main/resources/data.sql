@@ -3,9 +3,9 @@
 -- ============================================================
 
 -- ============================================================
--- 1. TORG101 (조직기본관리) - 부서 데이터
+-- 1. org_department (조직기본관리) - 부서 데이터
 -- ============================================================
-INSERT INTO TORG101 (ENTER_CD, ORG_CD, SDATE, EDATE, ORG_NM, ORG_FULL_NM, ORG_ENG_NM, ORG_TYPE, OBJECT_TYPE, VISUAL_YN, TEL_NO, CHKDATE, CHKID) VALUES
+INSERT INTO org_department (ENTER_CD, ORG_CD, SDATE, EDATE, ORG_NM, ORG_FULL_NM, ORG_ENG_NM, ORG_TYPE, OBJECT_TYPE, VISUAL_YN, TEL_NO, CHKDATE, CHKID) VALUES
 ('BS', 'ORG000', '20200101', '99991231', '대표이사', '대표이사', 'CEO Office', 'T001', 'D', 'Y', '02-1234-5678', CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', 'ORG001', '20200101', '99991231', '경영지원본부', '경영지원본부', 'Management Support Division', 'T002', 'D', 'Y', '02-1234-5600', CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', 'ORG002', '20200101', '99991231', '인사팀', '경영지원본부 > 인사팀', 'HR Team', 'T003', 'T', 'Y', '02-1234-5610', CURRENT_TIMESTAMP(), 'SYSTEM'),
@@ -21,9 +21,9 @@ INSERT INTO TORG101 (ENTER_CD, ORG_CD, SDATE, EDATE, ORG_NM, ORG_FULL_NM, ORG_EN
 ('BS', 'ORG030', '20200101', '99991231', '마케팅본부', '마케팅본부', 'Marketing Division', 'T002', 'D', 'Y', '02-1234-5900', CURRENT_TIMESTAMP(), 'SYSTEM');
 
 -- ============================================================
--- 2. THRM100 (인사마스타) - 사원 데이터 100명
+-- 2. emp_master (인사마스타) - 사원 데이터 100명
 -- ============================================================
-INSERT INTO THRM100 (SABUN, ENTER_CD, KOR_NM, ENG_NM, SEX_TYPE, EMP_YMD, EMAIL, HP_NO, STATUS_CD, CHKDATE) VALUES
+INSERT INTO emp_master (SABUN, ENTER_CD, KOR_NM, ENG_NM, SEX_TYPE, EMP_YMD, EMAIL, HP_NO, STATUS_CD, CHKDATE) VALUES
 ('20240001', 'BS', '김철수', 'Kim Cheolsu', 'M', '20200315', 'kim.cs@company.com', '010-1234-5678', '10', CURRENT_TIMESTAMP()),
 ('20240002', 'BS', '이영희', 'Lee Younghee', 'F', '20210701', 'lee.yh@company.com', '010-2345-6789', '10', CURRENT_TIMESTAMP()),
 ('20240003', 'BS', '박민수', 'Park Minsu', 'M', '20230110', 'park.ms@company.com', '010-3456-7890', '10', CURRENT_TIMESTAMP()),
@@ -126,11 +126,11 @@ INSERT INTO THRM100 (SABUN, ENTER_CD, KOR_NM, ENG_NM, SEX_TYPE, EMP_YMD, EMAIL, 
 ('20240100', 'BS', '김래원', 'Kim Raewon', 'M', '20260201', 'kim.rw@company.com', '010-2020-1010', '10', CURRENT_TIMESTAMP());
 
 -- ============================================================
--- 3. TSYS305 (USER관리) - 로그인 계정 (비밀번호: password123)
+-- 3. sys_user (사용자관리) - 로그인 계정 (비밀번호: password123)
 --    BCrypt 해싱값 = $2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy
 -- ============================================================
 -- 주요 테스트 계정 5개
-INSERT INTO TSYS305 (ENTER_CD, SABUN, ID, PASSWORD, ROCKING_YN, LOGIN_FAIL_CNT, PSWD_CHG_YMD, SEARCH_TYPE, EXTRA_YN, MAIN_TYPE, SKIN_TYPE, FONT_TYPE, CHKDATE, CHKID) VALUES
+INSERT INTO sys_user (ENTER_CD, SABUN, ID, PASSWORD, ROCKING_YN, LOGIN_FAIL_CNT, PSWD_CHG_YMD, SEARCH_TYPE, EXTRA_YN, MAIN_TYPE, SKIN_TYPE, FONT_TYPE, CHKDATE, CHKID) VALUES
 ('BS', '20240001', 'admin',     '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'N', 0, '20250201', 'A', 'N', 'M', 'theme4', 'nanum', CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', '20240002', 'younghee',  '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'N', 0, '20250201', 'P', 'N', 'M', 'theme4', 'nanum', CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', '20240003', 'minsu',     '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'N', 0, '20250201', 'P', 'N', 'M', 'theme4', 'nanum', CURRENT_TIMESTAMP(), 'SYSTEM'),
@@ -138,83 +138,83 @@ INSERT INTO TSYS305 (ENTER_CD, SABUN, ID, PASSWORD, ROCKING_YN, LOGIN_FAIL_CNT, 
 ('BS', '20240005', 'donghun',   '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'N', 0, '20250201', 'P', 'N', 'M', 'theme4', 'nanum', CURRENT_TIMESTAMP(), 'SYSTEM');
 
 -- ============================================================
--- 4. THRM151 (인사이력 - 개인조직사항) - 현재 유효 이력
+-- 4. emp_history (인사이력 - 개인조직사항) - 현재 유효 이력
 -- ============================================================
 -- 대표이사 직할
-INSERT INTO THRM151 (ENTER_CD, SABUN, SDATE, EDATE, ORG_CD, STATUS_CD, STATUS_NM, JIKCHAK_CD, JIKCHAK_NM, JIKWEE_CD, JIKWEE_NM, JIKGUB_CD, JIKGUB_NM, MANAGE_CD, MANAGE_NM, MAIN_DEPT_YN, CHKDATE, CHKID) VALUES
+INSERT INTO emp_history (ENTER_CD, SABUN, SDATE, EDATE, ORG_CD, STATUS_CD, STATUS_NM, JIKCHAK_CD, JIKCHAK_NM, JIKWEE_CD, JIKWEE_NM, JIKGUB_CD, JIKGUB_NM, MANAGE_CD, MANAGE_NM, MAIN_DEPT_YN, CHKDATE, CHKID) VALUES
 ('BS', '20240001', '20200315', '99991231', 'ORG002', '10', '재직', 'JC001', '팀장',   'JW002', '부장', 'JG002', '부장', 'MG01', '정규직', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM');
 -- 인사팀
-INSERT INTO THRM151 (ENTER_CD, SABUN, SDATE, EDATE, ORG_CD, STATUS_CD, STATUS_NM, JIKCHAK_CD, JIKCHAK_NM, JIKWEE_CD, JIKWEE_NM, JIKGUB_CD, JIKGUB_NM, MANAGE_CD, MANAGE_NM, MAIN_DEPT_YN, CHKDATE, CHKID) VALUES
+INSERT INTO emp_history (ENTER_CD, SABUN, SDATE, EDATE, ORG_CD, STATUS_CD, STATUS_NM, JIKCHAK_CD, JIKCHAK_NM, JIKWEE_CD, JIKWEE_NM, JIKGUB_CD, JIKGUB_NM, MANAGE_CD, MANAGE_NM, MAIN_DEPT_YN, CHKDATE, CHKID) VALUES
 ('BS', '20240002', '20210701', '99991231', 'ORG002', '10', '재직', NULL,    NULL,     'JW004', '과장', 'JG004', '과장', 'MG01', '정규직', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM');
 -- 개발1팀
-INSERT INTO THRM151 (ENTER_CD, SABUN, SDATE, EDATE, ORG_CD, STATUS_CD, STATUS_NM, JIKCHAK_CD, JIKCHAK_NM, JIKWEE_CD, JIKWEE_NM, JIKGUB_CD, JIKGUB_NM, MANAGE_CD, MANAGE_NM, MAIN_DEPT_YN, CHKDATE, CHKID) VALUES
+INSERT INTO emp_history (ENTER_CD, SABUN, SDATE, EDATE, ORG_CD, STATUS_CD, STATUS_NM, JIKCHAK_CD, JIKCHAK_NM, JIKWEE_CD, JIKWEE_NM, JIKGUB_CD, JIKGUB_NM, MANAGE_CD, MANAGE_NM, MAIN_DEPT_YN, CHKDATE, CHKID) VALUES
 ('BS', '20240003', '20230110', '99991231', 'ORG011', '10', '재직', NULL,    NULL,     'JW006', '사원', 'JG006', '사원', 'MG01', '정규직', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM');
 -- 총무팀 (휴직)
-INSERT INTO THRM151 (ENTER_CD, SABUN, SDATE, EDATE, ORG_CD, STATUS_CD, STATUS_NM, JIKCHAK_CD, JIKCHAK_NM, JIKWEE_CD, JIKWEE_NM, JIKGUB_CD, JIKGUB_NM, MANAGE_CD, MANAGE_NM, MAIN_DEPT_YN, CHKDATE, CHKID) VALUES
+INSERT INTO emp_history (ENTER_CD, SABUN, SDATE, EDATE, ORG_CD, STATUS_CD, STATUS_NM, JIKCHAK_CD, JIKCHAK_NM, JIKWEE_CD, JIKWEE_NM, JIKGUB_CD, JIKGUB_NM, MANAGE_CD, MANAGE_NM, MAIN_DEPT_YN, CHKDATE, CHKID) VALUES
 ('BS', '20240004', '20190520', '99991231', 'ORG003', '20', '휴직', NULL,    NULL,     'JW004', '과장', 'JG004', '과장', 'MG01', '정규직', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM');
 -- 개발2팀
-INSERT INTO THRM151 (ENTER_CD, SABUN, SDATE, EDATE, ORG_CD, STATUS_CD, STATUS_NM, JIKCHAK_CD, JIKCHAK_NM, JIKWEE_CD, JIKWEE_NM, JIKGUB_CD, JIKGUB_NM, MANAGE_CD, MANAGE_NM, MAIN_DEPT_YN, CHKDATE, CHKID) VALUES
+INSERT INTO emp_history (ENTER_CD, SABUN, SDATE, EDATE, ORG_CD, STATUS_CD, STATUS_NM, JIKCHAK_CD, JIKCHAK_NM, JIKWEE_CD, JIKWEE_NM, JIKGUB_CD, JIKGUB_NM, MANAGE_CD, MANAGE_NM, MAIN_DEPT_YN, CHKDATE, CHKID) VALUES
 ('BS', '20240005', '20240201', '99991231', 'ORG012', '10', '재직', NULL,    NULL,     'JW006', '사원', 'JG006', '사원', 'MG01', '정규직', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM');
 
 -- ============================================================
--- 5. THRM111 (가족사항)
+-- 5. emp_family (가족사항)
 -- ============================================================
-INSERT INTO THRM111 (ENTER_CD, SABUN, FAM_NM, FAM_CD, SDATE, FAM_YMD, SEX_TYPE, TEL_NO, FAM_YN, NOTE, CHKDATE, CHKID) VALUES
+INSERT INTO emp_family (ENTER_CD, SABUN, FAM_NM, FAM_CD, SDATE, FAM_YMD, SEX_TYPE, TEL_NO, FAM_YN, NOTE, CHKDATE, CHKID) VALUES
 ('BS', '20240001', '김순자', '01', '20200315', '19551020', 'F', '010-1111-0001', 'Y', '어머니', CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', '20240001', '김민지', '03', '20200315', '20100305', 'F', '010-1111-0002', 'Y', '딸', CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', '20240002', '이정호', '02', '20210701', '19600815', 'M', '010-2222-0001', 'N', '아버지', CURRENT_TIMESTAMP(), 'SYSTEM');
 
 -- ============================================================
--- 6. THRM113 (자격사항)
+-- 6. emp_certificate (자격사항)
 -- ============================================================
-INSERT INTO THRM113 (ENTER_CD, SABUN, SEQ, LICENSE_NM, LICENSE_GRADE, LICENSE_NO, LIC_S_YMD, OFFICE_CD, LICENSE_BIGO, CHKDATE, CHKID) VALUES
+INSERT INTO emp_certificate (ENTER_CD, SABUN, SEQ, LICENSE_NM, LICENSE_GRADE, LICENSE_NO, LIC_S_YMD, OFFICE_CD, LICENSE_BIGO, CHKDATE, CHKID) VALUES
 ('BS', '20240001', 1, '정보처리기사', '기사', '2018-001234', '20180615', '한국산업인력공단', '', CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', '20240001', 2, 'SQLD', '전문가', 'SQL-2020-5678', '20200320', '한국데이터산업진흥원', '', CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', '20240003', 1, 'AWS Solutions Architect', 'Associate', 'AWS-2023-1234', '20230801', 'Amazon', '', CURRENT_TIMESTAMP(), 'SYSTEM');
 
 -- ============================================================
--- 7. THRM115 (학력사항)
+-- 7. emp_education (학력사항)
 -- ============================================================
-INSERT INTO THRM115 (ENTER_CD, SABUN, SEQ, ACA_SCH_NM, ACAMAJ_NM, ACA_S_YM, ACA_E_YM, ACA_YN, ACA_TYPE, NOTE, CHKDATE, CHKID) VALUES
+INSERT INTO emp_education (ENTER_CD, SABUN, SEQ, ACA_SCH_NM, ACAMAJ_NM, ACA_S_YM, ACA_E_YM, ACA_YN, ACA_TYPE, NOTE, CHKDATE, CHKID) VALUES
 ('BS', '20240001', 1, '서울대학교', '컴퓨터공학', '20100301', '20140228', '10', 'Y', '학사', CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', '20240001', 2, '서울중학교', '', '20040301', '20070228', '10', 'N', '', CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', '20240002', 1, '연세대학교', '경영학', '20120301', '20160228', '10', 'Y', '학사', CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', '20240003', 1, '한양대학교', '소프트웨어학', '20180301', '20220228', '10', 'Y', '학사', CURRENT_TIMESTAMP(), 'SYSTEM');
 
 -- ============================================================
--- 8. THRM121 (병역사항)
+-- 8. emp_military (병역사항)
 -- ============================================================
-INSERT INTO THRM121 (ENTER_CD, SABUN, TRANSFER_CD, ARMY_CD, ARMY_GRADE_CD, ARMY_NO, ARMY_S_YMD, ARMY_E_YMD, ARMY_UNIT_NM, DISCHARGE_CD, ARMY_MEMO, CHKDATE, CHKID) VALUES
+INSERT INTO emp_military (ENTER_CD, SABUN, TRANSFER_CD, ARMY_CD, ARMY_GRADE_CD, ARMY_NO, ARMY_S_YMD, ARMY_E_YMD, ARMY_UNIT_NM, DISCHARGE_CD, ARMY_MEMO, CHKDATE, CHKID) VALUES
 ('BS', '20240001', '01', '01', '05', '12-71234567', '20140701', '20160401', '육군 제1사단', '01', '만기전역', CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', '20240003', '01', '02', '06', '23-71234568', '20220301', '20231201', '해군 작전사령부', '01', '만기전역', CURRENT_TIMESTAMP(), 'SYSTEM');
 
 -- ============================================================
--- 9. THRM124 (연락처)
+-- 9. emp_contact (연락처)
 -- ============================================================
-INSERT INTO THRM124 (ENTER_CD, SABUN, CONT_TYPE, CONT_ADDRESS, CHKDATE, CHKID) VALUES
+INSERT INTO emp_contact (ENTER_CD, SABUN, CONT_TYPE, CONT_ADDRESS, CHKDATE, CHKID) VALUES
 ('BS', '20240001', '01', '010-1234-5678', CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', '20240001', '02', '02-1234-5678', CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', '20240001', '03', 'kim.cs@personal.com', CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', '20240002', '01', '010-2345-6789', CURRENT_TIMESTAMP(), 'SYSTEM');
 
 -- ============================================================
--- 10. THRM128 (포상관리)
+-- 10. emp_award (포상관리)
 -- ============================================================
-INSERT INTO THRM128 (ENTER_CD, SABUN, SEQ, PRIZE_YMD, PRIZE_CD, PRIZE_OFFICE_NM, MEMO2, NOTE, CHKDATE, CHKID) VALUES
+INSERT INTO emp_award (ENTER_CD, SABUN, SEQ, PRIZE_YMD, PRIZE_CD, PRIZE_OFFICE_NM, MEMO2, NOTE, CHKDATE, CHKID) VALUES
 ('BS', '20240001', 1, '20220115', '01', '대표이사', '연간 우수사원 선정', '상금 200만원', CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', '20240001', 2, '20230720', '02', '기술본부장', '프로젝트 우수 기여', '', CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', '20240003', 1, '20240101', '01', '개발본부장', '신규 서비스 런칭 기여', '상금 100만원', CURRENT_TIMESTAMP(), 'SYSTEM');
 
 -- ============================================================
--- 11. THRM129 (징계관리)
+-- 11. emp_discipline (징계관리)
 -- ============================================================
-INSERT INTO THRM129 (ENTER_CD, SABUN, SEQ, PUNISH_YMD, PUNISH_CD, PUNISH_GB, SDATE, EDATE, PUNISH_MEMO, NOTE, CHKDATE, CHKID) VALUES
+INSERT INTO emp_discipline (ENTER_CD, SABUN, SEQ, PUNISH_YMD, PUNISH_CD, PUNISH_GB, SDATE, EDATE, PUNISH_MEMO, NOTE, CHKDATE, CHKID) VALUES
 ('BS', '20240005', 1, '20240815', '01', '01', '20240815', '20240915', '지각 3회 누적', '경고', CURRENT_TIMESTAMP(), 'SYSTEM');
 
 -- ============================================================
--- 12. TSYS309 (메인메뉴관리 - 대메뉴)
+-- 12. sys_main_menu (대메뉴관리)
 -- ============================================================
-INSERT INTO TSYS309 (ENTER_CD, MAIN_MENU_CD, MAIN_MENU_NM, SEQ, ICON_CLASS, USE_YN, CHKDATE, CHKID) VALUES
+INSERT INTO sys_main_menu (ENTER_CD, MAIN_MENU_CD, MAIN_MENU_NM, SEQ, ICON_CLASS, USE_YN, CHKDATE, CHKID) VALUES
 ('BS', 'M01', '대시보드', 1, 'DashboardOutlined', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', 'M02', '사원관리', 2, 'UserOutlined', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', 'M03', '조직관리', 3, 'TeamOutlined', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
@@ -223,62 +223,62 @@ INSERT INTO TSYS309 (ENTER_CD, MAIN_MENU_CD, MAIN_MENU_NM, SEQ, ICON_CLASS, USE_
 ('BS', 'M06', '시스템관리', 6, 'SettingOutlined', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM');
 
 -- ============================================================
--- 13. TSYS303 (메뉴프로그램관리 - 서브메뉴)
+-- 13. sys_menu_item (서브메뉴관리)
 -- ============================================================
 -- 대시보드 (M01) - 서브메뉴 없이 대메뉴 자체가 링크
-INSERT INTO TSYS303 (ENTER_CD, MAIN_MENU_CD, PRIOR_MENU_CD, MENU_CD, MENU_SEQ, MENU_NM, TYPE, PRG_CD, SEQ, CHKDATE, CHKID) VALUES
+INSERT INTO sys_menu_item (ENTER_CD, MAIN_MENU_CD, PRIOR_MENU_CD, MENU_CD, MENU_SEQ, MENU_NM, TYPE, PRG_CD, SEQ, CHKDATE, CHKID) VALUES
 ('BS', 'M01', 'M01', 'M01001', 1, '대시보드', 'P', '/', 1, CURRENT_TIMESTAMP(), 'SYSTEM');
 
 -- 사원관리 (M02)
-INSERT INTO TSYS303 (ENTER_CD, MAIN_MENU_CD, PRIOR_MENU_CD, MENU_CD, MENU_SEQ, MENU_NM, TYPE, PRG_CD, SEQ, CHKDATE, CHKID) VALUES
+INSERT INTO sys_menu_item (ENTER_CD, MAIN_MENU_CD, PRIOR_MENU_CD, MENU_CD, MENU_SEQ, MENU_NM, TYPE, PRG_CD, SEQ, CHKDATE, CHKID) VALUES
 ('BS', 'M02', 'M02', 'M02001', 1, '사원목록', 'P', '/employee', 1, CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', 'M02', 'M02', 'M02002', 1, '사원등록', 'P', '/employee/register', 2, CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', 'M02', 'M02', 'M02003', 1, '인사기본', 'P', '/personnel', 3, CURRENT_TIMESTAMP(), 'SYSTEM');
 
 -- 조직관리 (M03)
-INSERT INTO TSYS303 (ENTER_CD, MAIN_MENU_CD, PRIOR_MENU_CD, MENU_CD, MENU_SEQ, MENU_NM, TYPE, PRG_CD, SEQ, CHKDATE, CHKID) VALUES
+INSERT INTO sys_menu_item (ENTER_CD, MAIN_MENU_CD, PRIOR_MENU_CD, MENU_CD, MENU_SEQ, MENU_NM, TYPE, PRG_CD, SEQ, CHKDATE, CHKID) VALUES
 ('BS', 'M03', 'M03', 'M03001', 1, '부서관리', 'P', '/organization/department', 1, CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', 'M03', 'M03', 'M03002', 1, '직급관리', 'P', '/organization/position', 2, CURRENT_TIMESTAMP(), 'SYSTEM');
 
 -- 급여관리 (M04)
-INSERT INTO TSYS303 (ENTER_CD, MAIN_MENU_CD, PRIOR_MENU_CD, MENU_CD, MENU_SEQ, MENU_NM, TYPE, PRG_CD, SEQ, CHKDATE, CHKID) VALUES
+INSERT INTO sys_menu_item (ENTER_CD, MAIN_MENU_CD, PRIOR_MENU_CD, MENU_CD, MENU_SEQ, MENU_NM, TYPE, PRG_CD, SEQ, CHKDATE, CHKID) VALUES
 ('BS', 'M04', 'M04', 'M04001', 1, '급여계산', 'P', '/payroll/salary', 1, CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', 'M04', 'M04', 'M04002', 1, '연말정산', 'P', '/payroll/yearend', 2, CURRENT_TIMESTAMP(), 'SYSTEM');
 
 -- 근태관리 (M05)
-INSERT INTO TSYS303 (ENTER_CD, MAIN_MENU_CD, PRIOR_MENU_CD, MENU_CD, MENU_SEQ, MENU_NM, TYPE, PRG_CD, SEQ, CHKDATE, CHKID) VALUES
+INSERT INTO sys_menu_item (ENTER_CD, MAIN_MENU_CD, PRIOR_MENU_CD, MENU_CD, MENU_SEQ, MENU_NM, TYPE, PRG_CD, SEQ, CHKDATE, CHKID) VALUES
 ('BS', 'M05', 'M05', 'M05001', 1, '일일근태', 'P', '/attendance/daily', 1, CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', 'M05', 'M05', 'M05002', 1, '휴가관리', 'P', '/attendance/vacation', 2, CURRENT_TIMESTAMP(), 'SYSTEM');
 
 -- 시스템관리 (M06)
-INSERT INTO TSYS303 (ENTER_CD, MAIN_MENU_CD, PRIOR_MENU_CD, MENU_CD, MENU_SEQ, MENU_NM, TYPE, PRG_CD, SEQ, CHKDATE, CHKID) VALUES
+INSERT INTO sys_menu_item (ENTER_CD, MAIN_MENU_CD, PRIOR_MENU_CD, MENU_CD, MENU_SEQ, MENU_NM, TYPE, PRG_CD, SEQ, CHKDATE, CHKID) VALUES
 ('BS', 'M06', 'M06', 'M06001', 1, '메뉴관리', 'P', '/system/menu', 1, CURRENT_TIMESTAMP(), 'SYSTEM');
 
 -- ============================================================
--- 14. TSYS005 (공통코드 - 세부코드관리)
+-- 14. sys_common_code (공통코드 - 세부코드관리)
 --     NOTE1 = Tag 색상값 (프론트에서 사용)
 -- ============================================================
 
 -- 재직상태 (STATUS)
-INSERT INTO TSYS005 (ENTER_CD, GRCODE_CD, CODE, CODE_NM, CODE_ENG_NM, SEQ, VISUAL_YN, USE_YN, NOTE1, CHKDATE, CHKID) VALUES
+INSERT INTO sys_common_code (ENTER_CD, GRCODE_CD, CODE, CODE_NM, CODE_ENG_NM, SEQ, VISUAL_YN, USE_YN, NOTE1, CHKDATE, CHKID) VALUES
 ('BS', 'STATUS', '10', '재직', 'Active',  1, 'Y', 'Y', 'green',  CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', 'STATUS', '20', '휴직', 'Leave',   2, 'Y', 'Y', 'orange', CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', 'STATUS', '30', '퇴직', 'Retired', 3, 'Y', 'Y', 'red',    CURRENT_TIMESTAMP(), 'SYSTEM');
 
 -- 성별 (SEX_TYPE)
-INSERT INTO TSYS005 (ENTER_CD, GRCODE_CD, CODE, CODE_NM, CODE_ENG_NM, SEQ, VISUAL_YN, USE_YN, CHKDATE, CHKID) VALUES
+INSERT INTO sys_common_code (ENTER_CD, GRCODE_CD, CODE, CODE_NM, CODE_ENG_NM, SEQ, VISUAL_YN, USE_YN, CHKDATE, CHKID) VALUES
 ('BS', 'SEX_TYPE', 'M', '남성', 'Male',   1, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', 'SEX_TYPE', 'F', '여성', 'Female', 2, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM');
 
 -- 조직유형 (ORG_TYPE)
-INSERT INTO TSYS005 (ENTER_CD, GRCODE_CD, CODE, CODE_NM, CODE_ENG_NM, SEQ, VISUAL_YN, USE_YN, NOTE1, CHKDATE, CHKID) VALUES
+INSERT INTO sys_common_code (ENTER_CD, GRCODE_CD, CODE, CODE_NM, CODE_ENG_NM, SEQ, VISUAL_YN, USE_YN, NOTE1, CHKDATE, CHKID) VALUES
 ('BS', 'ORG_TYPE', 'T001', '대표이사', 'CEO',      1, 'Y', 'Y', 'red',   CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', 'ORG_TYPE', 'T002', '본부',     'Division', 2, 'Y', 'Y', 'blue',  CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', 'ORG_TYPE', 'T003', '팀',       'Team',     3, 'Y', 'Y', 'green', CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', 'ORG_TYPE', 'T004', '파트',     'Part',     4, 'Y', 'Y', 'cyan',  CURRENT_TIMESTAMP(), 'SYSTEM');
 
 -- 가족관계 (FAM_CD)
-INSERT INTO TSYS005 (ENTER_CD, GRCODE_CD, CODE, CODE_NM, CODE_ENG_NM, SEQ, VISUAL_YN, USE_YN, CHKDATE, CHKID) VALUES
+INSERT INTO sys_common_code (ENTER_CD, GRCODE_CD, CODE, CODE_NM, CODE_ENG_NM, SEQ, VISUAL_YN, USE_YN, CHKDATE, CHKID) VALUES
 ('BS', 'FAM_CD', '01', '모',     'Mother',  1, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', 'FAM_CD', '02', '부',     'Father',  2, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', 'FAM_CD', '03', '자녀',   'Child',   3, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
@@ -287,7 +287,7 @@ INSERT INTO TSYS005 (ENTER_CD, GRCODE_CD, CODE, CODE_NM, CODE_ENG_NM, SEQ, VISUA
 ('BS', 'FAM_CD', '99', '기타',   'Others',  9, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM');
 
 -- 연락처구분 (CONT_TYPE)
-INSERT INTO TSYS005 (ENTER_CD, GRCODE_CD, CODE, CODE_NM, CODE_ENG_NM, SEQ, VISUAL_YN, USE_YN, CHKDATE, CHKID) VALUES
+INSERT INTO sys_common_code (ENTER_CD, GRCODE_CD, CODE, CODE_NM, CODE_ENG_NM, SEQ, VISUAL_YN, USE_YN, CHKDATE, CHKID) VALUES
 ('BS', 'CONT_TYPE', '01', '휴대폰',     'Mobile',    1, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', 'CONT_TYPE', '02', '자택전화',   'Home',      2, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', 'CONT_TYPE', '03', '개인이메일', 'Email',     3, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
@@ -296,21 +296,21 @@ INSERT INTO TSYS005 (ENTER_CD, GRCODE_CD, CODE, CODE_NM, CODE_ENG_NM, SEQ, VISUA
 ('BS', 'CONT_TYPE', '99', '기타',       'Others',    9, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM');
 
 -- 병역상태 (ARMY_TRANSFER)
-INSERT INTO TSYS005 (ENTER_CD, GRCODE_CD, CODE, CODE_NM, CODE_ENG_NM, SEQ, VISUAL_YN, USE_YN, CHKDATE, CHKID) VALUES
+INSERT INTO sys_common_code (ENTER_CD, GRCODE_CD, CODE, CODE_NM, CODE_ENG_NM, SEQ, VISUAL_YN, USE_YN, CHKDATE, CHKID) VALUES
 ('BS', 'ARMY_TRANSFER', '01', '필',       'Completed', 1, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', 'ARMY_TRANSFER', '02', '미필',     'Not yet',   2, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', 'ARMY_TRANSFER', '03', '면제',     'Exempted',  3, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', 'ARMY_TRANSFER', '04', '해당없음', 'N/A',       4, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM');
 
 -- 군별 (ARMY_CD)
-INSERT INTO TSYS005 (ENTER_CD, GRCODE_CD, CODE, CODE_NM, CODE_ENG_NM, SEQ, VISUAL_YN, USE_YN, CHKDATE, CHKID) VALUES
+INSERT INTO sys_common_code (ENTER_CD, GRCODE_CD, CODE, CODE_NM, CODE_ENG_NM, SEQ, VISUAL_YN, USE_YN, CHKDATE, CHKID) VALUES
 ('BS', 'ARMY_CD', '01', '육군',   'Army',    1, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', 'ARMY_CD', '02', '해군',   'Navy',    2, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', 'ARMY_CD', '03', '공군',   'Air Force', 3, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', 'ARMY_CD', '04', '해병대', 'Marines', 4, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM');
 
 -- 학력상태 (EDU_STATUS)
-INSERT INTO TSYS005 (ENTER_CD, GRCODE_CD, CODE, CODE_NM, CODE_ENG_NM, SEQ, VISUAL_YN, USE_YN, CHKDATE, CHKID) VALUES
+INSERT INTO sys_common_code (ENTER_CD, GRCODE_CD, CODE, CODE_NM, CODE_ENG_NM, SEQ, VISUAL_YN, USE_YN, CHKDATE, CHKID) VALUES
 ('BS', 'EDU_STATUS', '10', '졸업', 'Graduated',  1, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', 'EDU_STATUS', '20', '재학', 'Studying',   2, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),
 ('BS', 'EDU_STATUS', '30', '중퇴', 'Dropped',    3, 'Y', 'Y', CURRENT_TIMESTAMP(), 'SYSTEM'),

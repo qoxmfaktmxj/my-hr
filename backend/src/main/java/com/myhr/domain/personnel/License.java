@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "THRM113")
+@Table(name = "emp_certificate")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 @IdClass(License.LicenseId.class)
 public class License {

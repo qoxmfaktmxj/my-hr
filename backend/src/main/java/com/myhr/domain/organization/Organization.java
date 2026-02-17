@@ -6,10 +6,10 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 /**
- * TORG101 - 조직기본관리 테이블 매핑 Entity
+ * org_department - 조직기본관리 테이블 매핑 Entity
  */
 @Entity
-@Table(name = "TORG101")
+@Table(name = "org_department")
 @Getter
 @Setter
 @NoArgsConstructor

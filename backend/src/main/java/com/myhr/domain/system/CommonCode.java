@@ -6,10 +6,10 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 공통코드 (TSYS005 - 세부코드관리)
+ * sys_common_code - 공통코드(세부코드관리) 테이블 매핑 Entity
  */
 @Entity
-@Table(name = "TSYS005")
+@Table(name = "sys_common_code")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 @IdClass(CommonCode.CommonCodeId.class)
 public class CommonCode {

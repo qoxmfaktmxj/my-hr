@@ -6,11 +6,11 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 /**
- * THRM151 - 인사이력(개인조직사항) 테이블 매핑 Entity
+ * emp_history - 인사이력(개인조직사항) 테이블 매핑 Entity
  * 현재 부서/직급/직위 정보 조회에 사용
  */
 @Entity
-@Table(name = "THRM151")
+@Table(name = "emp_history")
 @Getter
 @Setter
 @NoArgsConstructor

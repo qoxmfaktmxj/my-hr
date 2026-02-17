@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "TSYS303")
+@Table(name = "sys_menu_item")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 @IdClass(MenuItem.MenuItemId.class)
 public class MenuItem {

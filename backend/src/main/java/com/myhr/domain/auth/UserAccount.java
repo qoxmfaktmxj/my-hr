@@ -6,11 +6,11 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 /**
- * TSYS305 - USER관리 테이블 매핑 Entity
+ * sys_user - 사용자 인증 테이블 매핑 Entity
  * 로그인 인증에 사용
  */
 @Entity
-@Table(name = "TSYS305")
+@Table(name = "sys_user")
 @Getter
 @Setter
 @NoArgsConstructor

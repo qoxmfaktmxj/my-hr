@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "THRM129")
+@Table(name = "emp_discipline")
 @Getter @Setter @NoArgsConstructor @AllArgsConstructor @Builder
 @IdClass(Discipline.DisciplineId.class)
 public class Discipline {
